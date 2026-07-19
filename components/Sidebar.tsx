@@ -45,6 +45,13 @@ const menuSections = [
     ],
   },
   {
+    title: 'Mentor',
+    items: [
+      { icon: '📚', label: 'Mening Kurslarim', href: '/dashboard/mentor/courses' },
+      { icon: '📂', label: 'Kategoriyalar', href: '/dashboard/mentor/categories' },
+    ],
+  },
+  {
     title: 'Admin',
     items: [
       { icon: '👥', label: 'Foydalanuvchilar', href: '/dashboard/admin/users' },
