@@ -54,42 +54,77 @@
    - Create/Read/Update/Delete modules
    - Course selector
    - Dark mode support
+   - **Bug fixed 2026-07-19 (session 2):** edit/delete were calling
+     `/lesson-modules/{id}` (404 against the real backend). Real
+     endpoints are `/lesson-modules/update-one/{id}` and
+     `/lesson-modules/delete-one/{id}` — fixed in
+     `app/dashboard/mentor/lesson-modules/page.tsx`.
+
+10. **Lessons CRUD** (`app/dashboard/mentor/lessons/page.tsx`) ✅ — done + verified 2026-07-19 (session 2)
+   - Create lesson with required video upload (multipart, `video` field required — backend crashes without it)
+   - List lessons, resolve module name via lesson-modules getall
+   - Edit (JSON PATCH `/lessons/update-one/:id` — video NOT editable via this endpoint, backend has no route for it)
+   - Delete (`/lessons/delete-one/:id`)
+   - Added "Darslar" entry to Sidebar.tsx under the "Mentor" section, linking to `/dashboard/mentor/lessons`
+   - Verified end-to-end against the real local backend (`~/Desktop/edfix_clone`, port 15975) via curl: create-with-video, getall, update, delete all confirmed working with the exact payload shapes the page sends. Video URLs returned by the backend are already absolute (`http://localhost:15975/api/video/...`) and directly usable as `<video src>`.
 
 ---
 
-## ⏳ REMAINING TASKS (13 CRUDs + Phase 2/3)
+## ⚠️ IMPORTANT — Endpoint verification (learned session 2, 2026-07-19)
+
+`api_info.md` and `API_QUICK_REFERENCE.md` are **not fully reliable** —
+several endpoints they document don't match the real backend (e.g.
+lesson-modules update/delete, course-categories `create`/`get-all` vs
+`create-one`/`getall`). Before wiring up a new CRUD page, verify the
+real routes against the running backend's swagger JSON:
+
+```bash
+curl -s http://localhost:15975/api-docs-json | python3 -m json.tool
+```
+
+Or grep the backend source directly if available locally at
+`~/Desktop/edfix_clone/src/modules/<resource>/` (controller has the
+routes, dto/ has the required/optional fields, prisma/schema.prisma
+has the data model). This is much more reliable than the committed
+markdown docs.
+
+Also: the `features/` directory (Zustand stores, axios instance, auth
+hooks — everything the app imports from `@/features`) had **never
+been committed to git** despite being used since the first auth
+commit. Fixed in session 2 — it's now tracked. If a future session
+finds untracked-but-depended-upon directories again, commit them
+before building on top.
+
+---
+
+## ⏳ REMAINING TASKS (12 CRUDs + Phase 2/3)
 
 ### 🔴 PHASE 1 (High Priority - Core Learning Path)
 
 **Next Tasks (In Order):**
-1. **Lessons CRUD** (~400 lines)
-   - Create lessons with video upload
-   - Lesson detail view
-   - File handling with FormData
-
-2. **Lesson Files CRUD** (~300 lines)
+1. **Lesson Files CRUD** (~300 lines) — NEXT
    - Upload PDF/DOC files
    - File management
 
-3. **Lesson Views** (~150 lines)
+2. **Lesson Views** (~150 lines)
    - Mark lesson as watched
    - Progress tracking
 
-4. **Homeworks CRUD** (~350 lines)
+3. **Homeworks CRUD** (~350 lines)
    - Create homework assignments
    - Student submission view
 
-5. **Homework Submissions CRUD** (~500 lines)
+4. **Homework Submissions CRUD** (~500 lines)
    - Student submissions
    - Mentor grading interface
    - Status tracking (PENDING/APPROVED/REJECTED)
 
-6. **Exams/Questions CRUD** (~450 lines)
+5. **Exams/Questions CRUD** (~450 lines)
    - Multiple choice question creation
    - 4 variants (A, B, C, D)
    - Answer key management
 
-7. **Exam Results CRUD** (~300 lines)
+6. **Exam Results CRUD** (~300 lines)
    - Score calculation
    - Pass/fail determination
    - Certificate trigger
@@ -199,7 +234,7 @@ npm run dev
 ```
 
 ### Step 2: Pick Next Task
-From `REMAINING_CRUDS.md`, the next is **Lessons CRUD**.
+From `REMAINING_CRUDS.md`, the next is **Lesson Files CRUD**.
 
 ### Step 3: Implementation Template
 Each CRUD follows this pattern:
@@ -252,7 +287,7 @@ npm run lint               # Check TypeScript/ESLint
 - **Completed Work:** `.claude/task_history/COMPLETED_TASKS.md`
 - **Task Roadmap:** `.claude/task_history/REMAINING_CRUDS.md`
 - **Theme Setup:** `app/theme-context.tsx`
-- **Example CRUD:** `app/dashboard/mentor/lesson-modules/page.tsx`
+- **Example CRUD:** `app/dashboard/mentor/lessons/page.tsx` (has file upload + edit/delete correctly wired)
 
 ---
 
@@ -260,11 +295,12 @@ npm run lint               # Check TypeScript/ESLint
 
 1. Read this prompt
 2. Check git log to see last work
-3. Start with **Lessons CRUD** (`.claude/task_history/REMAINING_CRUDS.md` - item #2)
-4. Use Lesson Modules page as template
-5. Add video upload handling
+3. **Verify real endpoints first:** `curl -s http://localhost:15975/api-docs-json | python3 -m json.tool` — don't trust `api_info.md`/`API_QUICK_REFERENCE.md` blindly, see the warning section above
+4. Start with **Lesson Files CRUD** (`.claude/task_history/REMAINING_CRUDS.md` - item #1). Endpoints are versioned oddly: `POST /lesson-files/v1/create-one`, `GET /lesson-files/v2/get-all`, `GET /lesson-files/v3/get-one/:id`, `PATCH /lesson-files/v4/update-one/:id`, `DELETE /lesson-files/v5/delete-one/:id` — confirm this against swagger-json before wiring up, it's unusual
+5. Use `app/dashboard/mentor/lessons/page.tsx` as template (multipart file upload pattern, required-on-create-only file field)
 6. Test dark mode
-7. Commit
+7. Consider delegating the actual page-writing to a sub-agent to save tokens once the endpoint/data-model research is done
+8. Commit
 
 ---
 

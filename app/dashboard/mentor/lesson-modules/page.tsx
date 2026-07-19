@@ -109,7 +109,7 @@ export default function LessonModulesPage() {
 
     try {
       const endpoint = editingId
-        ? `http://localhost:15975/api/lesson-modules/${editingId}`
+        ? `http://localhost:15975/api/lesson-modules/update-one/${editingId}`
         : 'http://localhost:15975/api/lesson-modules/create';
 
       const method = editingId ? 'PATCH' : 'POST';
@@ -157,7 +157,7 @@ export default function LessonModulesPage() {
 
     try {
       const response = await fetch(
-        `http://localhost:15975/api/lesson-modules/${id}`,
+        `http://localhost:15975/api/lesson-modules/delete-one/${id}`,
         {
           method: 'DELETE',
           headers: { 'Authorization': `Bearer ${accessToken}` },
