@@ -44,6 +44,12 @@ const menuSections = [
       { icon: '📧', label: 'Aloqa', href: '/dashboard/contact' },
     ],
   },
+  {
+    title: 'Admin',
+    items: [
+      { icon: '👥', label: 'Foydalanuvchilar', href: '/dashboard/admin/users' },
+    ],
+  },
 ];
 
 export function Sidebar() {
