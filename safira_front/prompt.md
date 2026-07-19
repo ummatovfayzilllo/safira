@@ -85,7 +85,7 @@
    - Edit (JSON PATCH `/lessons/update-one/:id` — video NOT editable via this endpoint, backend has no route for it)
    - Delete (`/lessons/delete-one/:id`)
    - Added "Darslar" entry to Sidebar.tsx under the "Mentor" section, linking to `/dashboard/mentor/lessons`
-   - Verified end-to-end against the real local backend (`~/Desktop/edfix_clone`, port 15975) via curl: create-with-video, getall, update, delete all confirmed working with the exact payload shapes the page sends. Video URLs returned by the backend are already absolute (`http://localhost:15975/api/video/...`) and directly usable as `<video src>`.
+   - Verified end-to-end against the real local backend (`~/Desktop/safira/safira_backend`, port 15975) via curl: create-with-video, getall, update, delete all confirmed working with the exact payload shapes the page sends. Video URLs returned by the backend are already absolute (`http://localhost:15975/api/video/...`) and directly usable as `<video src>`.
 
 11. **Lesson Files CRUD** (`app/dashboard/mentor/lesson-files/page.tsx`) ✅ — done + verified 2026-07-19 (session 2, sub-agent)
    - Create file attachment with required file upload (multipart, `file` field required — backend crashes without it, same pattern as Lessons' `video`)
@@ -111,7 +111,7 @@ curl -s http://localhost:15975/api-docs-json | python3 -m json.tool
 ```
 
 Or grep the backend source directly if available locally at
-`~/Desktop/edfix_clone/src/modules/<resource>/` (controller has the
+`~/Desktop/safira/safira_backend/src/modules/<resource>/` (controller has the
 routes, dto/ has the required/optional fields, prisma/schema.prisma
 has the data model). This is much more reliable than the committed
 markdown docs.

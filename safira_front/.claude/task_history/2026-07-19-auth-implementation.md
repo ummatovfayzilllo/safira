@@ -242,7 +242,7 @@ features/
 
 **Setup:**
 - Frontend: http://localhost:3000 ✅ Running
-- Backend: http://localhost:15975 ⏳ Needs: `cd ~/Desktop/edfix_clone && npm run start:dev`
+- Backend: http://localhost:15975 ⏳ Needs: `cd ~/Desktop/safira/safira_backend && npm run start:dev`
 
 **Test Cases:**
 - [ ] Register new user (email verification)
@@ -281,7 +281,7 @@ features/
 
 ## 🔗 Related Files
 
-- Backend: ~/Desktop/edfix_clone
+- Backend: ~/Desktop/safira/safira_backend
 - API Docs: `api_info.md` (114+ endpoints)
 - Auth Types: `features/auth/types.ts`
 - Zustand Stores: `features/stores/`

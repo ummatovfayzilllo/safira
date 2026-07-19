@@ -150,7 +150,7 @@
 npm run dev        # http://localhost:3000
 
 # Terminal 2 - Backend
-cd ~/Desktop/edfix_clone
+cd ~/Desktop/safira/safira_backend
 npm run start:dev  # http://localhost:15975
 
 # Terminal 3 - Testing (optional)
