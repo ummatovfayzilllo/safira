@@ -1,11 +1,54 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
 import { PrismaService } from 'src/core/prisma/prisma.service';
 import { CreateAdminDto } from './dto/create-admin.dto';
+import { CreateNewUserDto } from './dto/create-new-user.dto';
 import { UserRoles } from 'src/common/types/user.types';
+import * as bcrypt from 'bcrypt';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class AdminService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly config: ConfigService,
+  ) {}
+
+  async createNewUser(createNewUserDto: CreateNewUserDto) {
+    const { email, password, fullName, role = UserRoles.STUDENT, image } = createNewUserDto;
+
+    const existingUser = await this.prisma.user.findUnique({ where: { email } });
+    if (existingUser) {
+      throw new BadRequestException(`Bu email allaqachon ro'yxatdan o'tgan (${email})`);
+    }
+
+    const hashedPassword = await bcrypt.hashSync(
+      password,
+      parseInt(this.config.get<string>('BCRYPT_SALT_ROUNDS') || '10'),
+    );
+
+    const newUser = await this.prisma.user.create({
+      data: {
+        email,
+        password: hashedPassword,
+        fullName,
+        role,
+        image: image || null,
+      },
+      select: {
+        id: true,
+        fullName: true,
+        email: true,
+        role: true,
+        image: true,
+        createdAt: true,
+      },
+    });
+
+    return {
+      message: 'Yangi foydalanuvchi muvaffaqiyatli yaratildi',
+      data: newUser,
+    };
+  }
 
   async create(createAdminDto: CreateAdminDto) {
     const { userId, role } = createAdminDto;

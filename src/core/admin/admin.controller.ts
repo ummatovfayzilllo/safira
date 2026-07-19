@@ -10,6 +10,7 @@ import {
 } from '@nestjs/common';
 import { AdminService } from './admin.service';
 import { CreateAdminDto } from './dto/create-admin.dto';
+import { CreateNewUserDto } from './dto/create-new-user.dto';
 import { Permission, Public } from 'src/global/decorators/auth.decorators';
 import { PermissionService } from './permission/permission.service';
 import { CreatePermissionDto } from './dto/create-permission.dto';
@@ -23,6 +24,11 @@ export class AdminController {
     private readonly permissionService: PermissionService,
   ) {}
 
+  @Post('new-user')
+  createNewUser(@Body() createNewUserDto: CreateNewUserDto) {
+    return this.adminService.createNewUser(createNewUserDto);
+  }
+
   @Post('assign-role')
   create(@Body() createAdminDto: CreateAdminDto) {
     return this.adminService.create(createAdminDto);
@@ -33,7 +39,7 @@ export class AdminController {
     return this.permissionService.create(data);
   }
 
-  @Put('update-perrmission/:permissionId')
+  @Put('update-permission/:permissionId')
   updatePermission(
     @Body() data: UpdatePermissionDto,
     @Param('permissionId') id: string,

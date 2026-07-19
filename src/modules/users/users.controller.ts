@@ -31,7 +31,7 @@ import { JwtPayload } from 'src/common/types/jwt.types';
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-  @ApiExcludeEndpoint()
+  @Public()
   @Post('create')
   @ApiConsumes('multipart/form-data')
   @ApiBody(userApiBody)
