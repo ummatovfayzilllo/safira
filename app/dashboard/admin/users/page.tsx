@@ -125,26 +125,48 @@ export default function UsersPage() {
     setFormLoading(true);
 
     try {
-      // FormData bilan yuborish (/admin/new-user endpoint)
-      const submitData = new FormData();
-      submitData.append('fullName', formData.fullName);
-      submitData.append('email', formData.email);
-      submitData.append('password', formData.password);
-      submitData.append('role', formData.role);
-      if (fileInputRef.current?.files?.[0]) {
-        submitData.append('image', fileInputRef.current.files[0]);
-      }
+      const hasImage = fileInputRef.current?.files?.[0];
 
-      const response = await fetch(
-        'http://localhost:15975/api/admin/new-user',
-        {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${accessToken}`,
-          },
-          body: submitData,
-        }
-      );
+      let response;
+
+      if (hasImage) {
+        // Image bilan → FormData (multipart/form-data)
+        const submitData = new FormData();
+        submitData.append('fullName', formData.fullName);
+        submitData.append('email', formData.email);
+        submitData.append('password', formData.password);
+        submitData.append('role', formData.role);
+        submitData.append('image', hasImage);
+
+        response = await fetch(
+          'http://localhost:15975/api/admin/new-user',
+          {
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${accessToken}`,
+            },
+            body: submitData,
+          }
+        );
+      } else {
+        // Image yo'q → JSON (application/json)
+        response = await fetch(
+          'http://localhost:15975/api/admin/new-user',
+          {
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${accessToken}`,
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              fullName: formData.fullName,
+              email: formData.email,
+              password: formData.password,
+              role: formData.role,
+            }),
+          }
+        );
+      }
 
       if (response.ok) {
         setFormSuccess(true);
