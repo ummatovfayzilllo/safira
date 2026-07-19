@@ -150,7 +150,7 @@ export class AuthService {
     const user = await this.userService.findByEmail(email);
 
     if (!user) {
-      throw new BadRequestException("Bu emailda foydalanuvchi topilmadi!");
+      throw new BadRequestException('Bu emailda foydalanuvchi topilmadi!');
     }
 
     const code = this.generateOtpCode();
@@ -176,7 +176,7 @@ export class AuthService {
     );
 
     return {
-      message: 'Parol o\'zgartirishni tasdiqlovchi kod emailingizga yuborildi',
+      message: "Parol o'zgartirishni tasdiqlovchi kod emailingizga yuborildi",
       data: {
         email,
         expiresIn: Math.floor((ttl - Date.now()) / (1000 * 60)),
@@ -188,7 +188,9 @@ export class AuthService {
     const cachedData = this.cacheService.get(`reset_${email}`);
 
     if (!cachedData) {
-      throw new BadRequestException(`${email} uchun tasdiq ma'lumotlari topilmadi!`);
+      throw new BadRequestException(
+        `${email} uchun tasdiq ma'lumotlari topilmadi!`,
+      );
     }
 
     if (cachedData.code !== code) {
@@ -204,7 +206,7 @@ export class AuthService {
     await this.userService.updatePassword(email, newPassword);
 
     return {
-      message: 'Parolingiz muvaffaqiyatli o\'zgartirildi',
+      message: "Parolingiz muvaffaqiyatli o'zgartirildi",
       data: {
         email,
       },
@@ -225,7 +227,7 @@ export class AuthService {
         refreshToken: await this.jwtService.getRefreshToken(user),
       };
     } catch (error) {
-      throw new UnauthorizedException('Refresh token noto\'g\'ri yoki expired!');
+      throw new UnauthorizedException("Refresh token noto'g'ri yoki expired!");
     }
   }
 

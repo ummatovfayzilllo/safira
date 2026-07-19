@@ -5,7 +5,7 @@ export class RefreshTokenDto {
   @ApiProperty({
     example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...',
     required: false,
-    description: 'Refresh token (optional, cookie dan olinsa bo\'ladi)',
+    description: "Refresh token (optional, cookie dan olinsa bo'ladi)",
   })
   @IsString()
   @IsOptional()

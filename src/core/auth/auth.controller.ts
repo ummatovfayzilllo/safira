@@ -1,11 +1,24 @@
-import { Controller, Post, Body, Res, HttpStatus, Req, UnauthorizedException, Get } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  Res,
+  HttpStatus,
+  Req,
+  UnauthorizedException,
+  Get,
+} from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { Response, Request } from 'express';
 import { AuthService } from './auth.service';
 import { CreateAuthDto, VerifyDto } from './dto/create-auth.dto';
 import { LoginDto } from './dto/login.dto';
 import { RegisterResponseDto, AuthResponseDto } from './dto/auth-response.dto';
-import { RequestPasswordResetDto, VerifyPasswordResetDto, ResetPasswordResponseDto } from './dto/reset-password.dto';
+import {
+  RequestPasswordResetDto,
+  VerifyPasswordResetDto,
+  ResetPasswordResponseDto,
+} from './dto/reset-password.dto';
 import { RefreshTokenDto, TokenResponseDto } from './dto/refresh-token.dto';
 import { Public } from 'src/global/decorators/auth.decorators';
 
@@ -176,7 +189,7 @@ export class AuthController {
   @ApiOperation({ summary: 'Tizimdan chiqish' })
   @ApiResponse({
     status: HttpStatus.OK,
-    description: 'Muvaffaqiyatli chiqtingiz. Cookies o\'chirildi',
+    description: "Muvaffaqiyatli chiqtingiz. Cookies o'chirildi",
   })
   async logout(@Res() res: Response) {
     const result = await this.authService.logout();

@@ -10,7 +10,10 @@ import { SwaggerTheme, SwaggerThemeNameEnum } from 'swagger-themes';
 import * as cookieParser from 'cookie-parser';
 import { DeviceMiddleware } from 'src/global/middlewares/device.middleware';
 
-export const initGlobalApp = (app: INestApplication, configService?: ConfigService) => {
+export const initGlobalApp = (
+  app: INestApplication,
+  configService?: ConfigService,
+) => {
   const config = new DocumentBuilder()
     .setTitle('Edfix Clone API')
     .setDescription('Education Management System - API Documentation')

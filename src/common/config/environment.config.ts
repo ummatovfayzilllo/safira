@@ -5,7 +5,9 @@ export class EnvironmentConfig {
 
   // JWT Configuration
   getJwtAccessSecret(): string {
-    return this.configService.get('JWT_ACCESS_SECRET') || 'default-access-secret';
+    return (
+      this.configService.get('JWT_ACCESS_SECRET') || 'default-access-secret'
+    );
   }
 
   getJwtAccessExpiresIn(): string {
@@ -13,7 +15,9 @@ export class EnvironmentConfig {
   }
 
   getJwtRefreshSecret(): string {
-    return this.configService.get('JWT_REFRESH_SECRET') || 'default-refresh-secret';
+    return (
+      this.configService.get('JWT_REFRESH_SECRET') || 'default-refresh-secret'
+    );
   }
 
   getJwtRefreshExpiresIn(): string {

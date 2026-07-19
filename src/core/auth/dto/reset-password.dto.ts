@@ -1,5 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEmail, IsNotEmpty, IsString, IsNumber, MinLength } from 'class-validator';
+import {
+  IsEmail,
+  IsNotEmpty,
+  IsString,
+  IsNumber,
+  MinLength,
+} from 'class-validator';
 import { Transform } from 'class-transformer';
 
 export class RequestPasswordResetDto {
@@ -29,11 +35,11 @@ export class VerifyPasswordResetDto {
   @ApiProperty({ example: 'newPassword123' })
   @IsString()
   @IsNotEmpty()
-  @MinLength(8, { message: 'Parol kamida 8 ta belgidan iborat bo\'lishi kerak' })
+  @MinLength(8, { message: "Parol kamida 8 ta belgidan iborat bo'lishi kerak" })
   newPassword: string;
 }
 
 export class ResetPasswordResponseDto {
-  @ApiProperty({ example: 'Parolingiz muvaffaqiyatli o\'zgartirildi' })
+  @ApiProperty({ example: "Parolingiz muvaffaqiyatli o'zgartirildi" })
   message: string;
 }
