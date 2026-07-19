@@ -38,7 +38,7 @@ export class ExamResultsController {
     return this.examResultsService.update(id, updateExamResultDto);
   }
 
-  @Delete('delte-ne/:id')
+  @Delete('delete-one/:id')
   remove(@Param('id') id: string) {
     return this.examResultsService.remove(id);
   }

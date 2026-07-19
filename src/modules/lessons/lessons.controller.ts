@@ -47,7 +47,7 @@ export class LessonsController {
     return this.lessonsService.findOne(id);
   }
 
-  @Patch('update-oen/:id')
+  @Patch('update-one/:id')
   update(@Param('id') id: string, @Body() data: UpdateLessonDto) {
     return this.lessonsService.update(id, data);
   }

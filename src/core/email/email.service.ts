@@ -33,6 +33,7 @@ export class EmailService {
       text: `Salom sizning tasdiq kodingiz: ${code}`,
       html: messageGenerator(typeMessage, code),
     });
+
     return result;
   }
 }

@@ -36,6 +36,7 @@ export class CreateCourseDto {
       return e.value === '' ? undefined : Number(e.value);
     }
   })
+  @IsOptional()
   @IsNumber()
   discount: number;
 

@@ -126,7 +126,6 @@ export class AuthService {
 
   async login(data: LoginDto) {
     const oldUser = await this.userService.findByEmail(data.email);
-
     if (!oldUser) {
       throw new UnauthorizedException("Email yoki parol noto'g'ri!");
     }

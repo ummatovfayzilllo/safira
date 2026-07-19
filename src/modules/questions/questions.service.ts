@@ -29,9 +29,9 @@ export class QuestionsService {
       'id',
       data.courseId,
     );
-    data['file'] = files.map(async (file) => {
-      return urlGenerator(this.config, file.filename);
-    });
+    if (files && files[0]) {
+      data['file'] = urlGenerator(this.config, files[0].filename);
+    }
     try {
       return {
         message: 'This action adds a new question',
@@ -79,18 +79,12 @@ export class QuestionsService {
       id,
     );
     try {
-      if (files) {
-        data['file'] = files.map(async (file) => {
-          return urlGenerator(this.config, file.filename);
-        });
+      if (files && files[0]) {
+        data['file'] = urlGenerator(this.config, files[0].filename);
       }
       if (oldQuestioon.file) {
-        oldQuestioon.file.forEach(async (url) => {
-          if (url && typeof url === 'string') {
-            const fileName = url.split('/').at(-1);
-            await unlinkFile(fileName || '');
-          }
-        });
+        const fileName = oldQuestioon.file.split('/').at(-1);
+        await unlinkFile(fileName || '');
       }
       const updatedQuestion = await this.prisma.question.update({
         where: { id: id },
@@ -115,12 +109,8 @@ export class QuestionsService {
     );
     try {
       if (oldQuestioon.file) {
-        oldQuestioon.file.forEach(async (url) => {
-          if (url && typeof url === 'string') {
-            const fileName = url.split('/').at(-1);
-            await unlinkFile(fileName || '');
-          }
-        });
+        const fileName = oldQuestioon.file.split('/').at(-1);
+        await unlinkFile(fileName || '');
       }
       const deletedQuestion = await this.prisma.question.delete({
         where: { id: id },

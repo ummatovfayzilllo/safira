@@ -53,9 +53,9 @@ export class RatingService {
     };
   }
 
-  async findOne(id: number) {
+  async findOne(id: string) {
     const result = await this.prisma.rating.findFirst({
-      where: { id: id.toString() },
+      where: { id },
       include: {
         user: { select: { id: true, fullName: true, email: true } },
         courses: { select: { id: true, name: true } },
@@ -72,16 +72,16 @@ export class RatingService {
     };
   }
 
-  async update(id: number, updateRatingDto: UpdateRatingDto) {
+  async update(id: string, updateRatingDto: UpdateRatingDto) {
     await checkExistsResurs(
       this.prisma,
       ModelsEnumInPrisma.RATING,
       'id',
-      id.toString(),
+      id,
     );
 
     const result = await this.prisma.rating.update({
-      where: { id: id.toString() },
+      where: { id },
       data: updateRatingDto,
       include: {
         user: { select: { id: true, fullName: true, email: true } },
@@ -95,16 +95,16 @@ export class RatingService {
     };
   }
 
-  async remove(id: number) {
+  async remove(id: string) {
     await checkExistsResurs(
       this.prisma,
       ModelsEnumInPrisma.RATING,
       'id',
-      id.toString(),
+      id,
     );
 
     const result = await this.prisma.rating.delete({
-      where: { id: id.toString() },
+      where: { id },
     });
 
     return {

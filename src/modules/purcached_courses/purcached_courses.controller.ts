@@ -40,7 +40,7 @@ export class PurcachedCoursesController {
     return this.purcachedCoursesService.update(id, updatePurcachedCourseDto);
   }
 
-  @Delete('delete-oen/:id')
+  @Delete('delete-one/:id')
   remove(@Param('id') id: string) {
     return this.purcachedCoursesService.remove(id);
   }

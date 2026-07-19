@@ -94,7 +94,7 @@ export class CoursesController {
     }
   }
 
-  @Delete('delte-one/:id')
+  @Delete('delete-one/:id')
   remove(@Param('id') id: string) {
     return this.coursesService.remove(id);
   }
