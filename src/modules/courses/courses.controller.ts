@@ -20,36 +20,37 @@ import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { courseApiBody } from 'src/common/types/api.body.types';
 import { Public } from 'src/global/decorators/auth.decorators';
 
-
 @Controller('courses')
 export class CoursesController {
-  constructor(private readonly coursesService: CoursesService) { }
+  constructor(private readonly coursesService: CoursesService) {}
 
-  @Post("create-one")
-  @ApiConsumes("multipart/form-data")
+  @Post('create-one')
+  @ApiConsumes('multipart/form-data')
   @ApiBody(courseApiBody)
-  @UseInterceptors(FileFieldsInterceptor(courseFileFields, fileStorages(['image','video'])))
+  @UseInterceptors(
+    FileFieldsInterceptor(courseFileFields, fileStorages(['image', 'video'])),
+  )
   createCourse(
     @Body() data: CreateCourseDto,
-    @UploadedFiles() files: Express.Multer.File[]
+    @UploadedFiles() files: Express.Multer.File[],
   ) {
     try {
-      let banner = "null"
-      let introVideo = "null"
+      let banner = 'null';
+      let introVideo = 'null';
       if (files['banner']) {
-        banner = files['banner'][0].filename
+        banner = files['banner'][0].filename;
       }
       if (files['introVideo']) {
-        console.log(files['introVideo'])
-        introVideo = files['introVideo'][0].filename
+        console.log(files['introVideo']);
+        introVideo = files['introVideo'][0].filename;
       }
-      return this.coursesService.create(data, banner, introVideo)
+      return this.coursesService.create(data, banner, introVideo);
     } catch (error) {
-      throw new BadGatewayException("Invalid fields name files")
+      throw new BadGatewayException('Invalid fields name files');
     }
   }
   @Public()
-  @Get("getall")
+  @Get('getall')
   findAll() {
     return this.coursesService.findAll();
   }
@@ -61,28 +62,35 @@ export class CoursesController {
   }
 
   @Patch('update-one/:id')
-  @ApiConsumes("multipart/form-data")
+  @ApiConsumes('multipart/form-data')
   @ApiBody(courseApiBody)
-  @UseInterceptors(FileFieldsInterceptor(courseFileFields, fileStorages(["images","video"])))
+  @UseInterceptors(
+    FileFieldsInterceptor(courseFileFields, fileStorages(['images', 'video'])),
+  )
   update(
     @Param('id') id: string,
     @Body() updateCourseDto: UpdateCourseDto,
-    @UploadedFiles() files: Express.Multer.File[]
+    @UploadedFiles() files: Express.Multer.File[],
   ) {
     try {
-      let banner : string | undefined = undefined
-      let introVideo : string | undefined = undefined
+      let banner: string | undefined = undefined;
+      let introVideo: string | undefined = undefined;
       if (files['banner']) {
-        banner = files['banner'][0].filename
+        banner = files['banner'][0].filename;
       }
       if (files['introVideo']) {
-        console.log(files['introVideo'])
-        introVideo = files['introVideo'][0].filename
+        console.log(files['introVideo']);
+        introVideo = files['introVideo'][0].filename;
       }
-      return this.coursesService.update(id, updateCourseDto,banner,introVideo);
+      return this.coursesService.update(
+        id,
+        updateCourseDto,
+        banner,
+        introVideo,
+      );
     } catch (error) {
-      console.log(error)
-      throw new HttpException("Course update filed ", 500)    
+      console.log(error);
+      throw new HttpException('Course update filed ', 500);
     }
   }
 

@@ -4,7 +4,10 @@ import { Action } from '@prisma/client';
 import { ModelsEnumInPrisma } from 'src/common/types/global.types';
 
 export class CreatePermissionDto {
-  @ApiProperty({ example: ModelsEnumInPrisma.COURSES, enum: ModelsEnumInPrisma })
+  @ApiProperty({
+    example: ModelsEnumInPrisma.COURSES,
+    enum: ModelsEnumInPrisma,
+  })
   @IsNotEmpty()
   @IsEnum(ModelsEnumInPrisma)
   model: ModelsEnumInPrisma;

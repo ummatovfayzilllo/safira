@@ -15,12 +15,12 @@ import { UpdateExamResultDto } from './dto/update-exam_result.dto';
 export class ExamResultsController {
   constructor(private readonly examResultsService: ExamResultsService) {}
 
-  @Post("create")
+  @Post('create')
   create(@Body() createExamResultDto: CreateExamResultDto) {
     return this.examResultsService.create(createExamResultDto);
   }
 
-  @Get("get-all")
+  @Get('get-all')
   findAll() {
     return this.examResultsService.findAll();
   }

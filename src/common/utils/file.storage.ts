@@ -1,12 +1,12 @@
 import { diskStorage } from 'multer';
-import { extname, } from 'node:path';
+import { extname } from 'node:path';
 import { UnsupportedMediaTypeException } from '@nestjs/common';
 import { getPathInFileType } from './generators';
 
 export const courseFileFields = [
   { name: 'banner', maxCount: 1 },
   { name: 'introVideo', maxCount: 1 },
-]
+];
 
 export const fileStorages = (allowedMimes: string[]) => ({
   storage: diskStorage({
@@ -25,26 +25,28 @@ export const fileStorages = (allowedMimes: string[]) => ({
 function fileFilters(allowedMimes: string[]) {
   return (req, file, cb) => {
     const mime = file.mimetype.split('/')[0];
-    if(file.fieldname && file.fieldname === 'banner'){
-      if(mime !== "image"){
+    if (file.fieldname && file.fieldname === 'banner') {
+      if (mime !== 'image') {
         cb(
           new UnsupportedMediaTypeException("banner type image bo'lishi kerak"),
-          false
-        )
+          false,
+        );
       }
     }
-    if(file.fieldname && file.fieldname === 'introVideo'){
-      if(mime !== "video"){
+    if (file.fieldname && file.fieldname === 'introVideo') {
+      if (mime !== 'video') {
         cb(
-          new UnsupportedMediaTypeException("introVideo type video bo'lishi kerak"),
-          false
-        )
+          new UnsupportedMediaTypeException(
+            "introVideo type video bo'lishi kerak",
+          ),
+          false,
+        );
       }
     }
     if (!allowedMimes.includes(mime)) {
       cb(
         new UnsupportedMediaTypeException(
-          `Fayl turi [${allowedMimes.join(', ')}] bo'lishi kerak`
+          `Fayl turi [${allowedMimes.join(', ')}] bo'lishi kerak`,
         ),
         false,
       );

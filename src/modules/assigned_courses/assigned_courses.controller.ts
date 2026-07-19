@@ -17,12 +17,12 @@ export class AssignedCoursesController {
     private readonly assignedCoursesService: AssignedCoursesService,
   ) {}
 
-  @Post("create-one")
+  @Post('create-one')
   create(@Body() data: CreateAssignedCourseDto) {
     return this.assignedCoursesService.create(data);
   }
 
-  @Get("getall")
+  @Get('getall')
   findAll() {
     return this.assignedCoursesService.findAll();
   }
@@ -33,10 +33,7 @@ export class AssignedCoursesController {
   }
 
   @Patch('update-one/:id')
-  update(
-    @Param('id') id: string,
-    @Body() data: UpdateAssignedCourseDto,
-  ) {
+  update(@Param('id') id: string, @Body() data: UpdateAssignedCourseDto) {
     return this.assignedCoursesService.update(id, data);
   }
 

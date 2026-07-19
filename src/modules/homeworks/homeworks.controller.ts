@@ -19,20 +19,26 @@ import { homeworkFIleApiBody } from 'src/common/types/api.body.types';
 
 @Controller('homeworks')
 export class HomeworksController {
-  constructor(private readonly homeworksService: HomeworksService) { }
+  constructor(private readonly homeworksService: HomeworksService) {}
 
-  @Post("create")
-  @ApiConsumes("multipart/form-data")
+  @Post('create')
+  @ApiConsumes('multipart/form-data')
   @ApiBody(homeworkFIleApiBody)
-  @UseInterceptors(FilesInterceptor("files", 10, fileStorages(["image","video","application","text"])))
+  @UseInterceptors(
+    FilesInterceptor(
+      'files',
+      10,
+      fileStorages(['image', 'video', 'application', 'text']),
+    ),
+  )
   create(
     @Body() data: CreateHomeworkDto,
-    @UploadedFiles() files: Express.Multer.File[]
+    @UploadedFiles() files: Express.Multer.File[],
   ) {
-    return this.homeworksService.create(data,files);
+    return this.homeworksService.create(data, files);
   }
 
-  @Get("get-all")
+  @Get('get-all')
   findAll() {
     return this.homeworksService.findAll();
   }
@@ -43,14 +49,21 @@ export class HomeworksController {
   }
 
   @Patch('update-one/:id')
-  @ApiConsumes("multipart/form-data")
+  @ApiConsumes('multipart/form-data')
   @ApiBody(homeworkFIleApiBody)
-  @UseInterceptors(FilesInterceptor("files", 10, fileStorages(["image","video","application","text"])))  update(
+  @UseInterceptors(
+    FilesInterceptor(
+      'files',
+      10,
+      fileStorages(['image', 'video', 'application', 'text']),
+    ),
+  )
+  update(
     @Param('id') id: string,
     @Body() data: UpdateHomeworkDto,
-    @UploadedFiles() files?: Express.Multer.File[]
+    @UploadedFiles() files?: Express.Multer.File[],
   ) {
-    return this.homeworksService.update(id, data,files);
+    return this.homeworksService.update(id, data, files);
   }
 
   @Delete('delete-one/:id')

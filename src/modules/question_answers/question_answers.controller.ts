@@ -22,10 +22,12 @@ export class QuestionAnswersController {
     private readonly questionAnswersService: QuestionAnswersService,
   ) {}
 
-  @Post("create")
-  @ApiConsumes("multipart")
+  @Post('create')
+  @ApiConsumes('multipart')
   @ApiBody(QuestionAnswerApiBody)
-  @UseInterceptors(FileInterceptor("files",fileStorages(["image","application","video"])))
+  @UseInterceptors(
+    FileInterceptor('files', fileStorages(['image', 'application', 'video'])),
+  )
   create(@Body() data: CreateQuestionAnswerDto) {
     return this.questionAnswersService.create(data);
   }
@@ -41,10 +43,7 @@ export class QuestionAnswersController {
   }
 
   @Patch(':id')
-  update(
-    @Param('id') id: string,
-    @Body() data: UpdateQuestionAnswerDto,
-  ) {
+  update(@Param('id') id: string, @Body() data: UpdateQuestionAnswerDto) {
     return this.questionAnswersService.update(id, data);
   }
 

@@ -10,8 +10,18 @@ export class ExamResultsService {
   constructor(private readonly prisma: PrismaService) {}
 
   async create(data: CreateExamResultDto) {
-    await checkExistsResurs(this.prisma, ModelsEnumInPrisma.USERS, 'id', data.userId);
-    await checkExistsResurs(this.prisma, ModelsEnumInPrisma.LESSON_MODULES, 'id', data.lessonModulId);
+    await checkExistsResurs(
+      this.prisma,
+      ModelsEnumInPrisma.USERS,
+      'id',
+      data.userId,
+    );
+    await checkExistsResurs(
+      this.prisma,
+      ModelsEnumInPrisma.LESSON_MODULES,
+      'id',
+      data.lessonModulId,
+    );
 
     try {
       const result = await this.prisma.examResult.create({ data });
@@ -39,7 +49,12 @@ export class ExamResultsService {
   }
 
   async findOne(id: string) {
-    await checkExistsResurs(this.prisma, ModelsEnumInPrisma.EXAM_RESULTS, 'id', id);
+    await checkExistsResurs(
+      this.prisma,
+      ModelsEnumInPrisma.EXAM_RESULTS,
+      'id',
+      id,
+    );
     try {
       const result = await this.prisma.examResult.findUnique({ where: { id } });
       return {
@@ -53,12 +68,27 @@ export class ExamResultsService {
   }
 
   async update(id: string, data: UpdateExamResultDto) {
-    await checkExistsResurs(this.prisma, ModelsEnumInPrisma.EXAM_RESULTS, 'id', id);
+    await checkExistsResurs(
+      this.prisma,
+      ModelsEnumInPrisma.EXAM_RESULTS,
+      'id',
+      id,
+    );
     if (data.userId) {
-      await checkExistsResurs(this.prisma, ModelsEnumInPrisma.USERS, 'id', data.userId);
+      await checkExistsResurs(
+        this.prisma,
+        ModelsEnumInPrisma.USERS,
+        'id',
+        data.userId,
+      );
     }
     if (data.lessonModulId) {
-      await checkExistsResurs(this.prisma, ModelsEnumInPrisma.LESSON_MODULES, 'id', data.lessonModulId);
+      await checkExistsResurs(
+        this.prisma,
+        ModelsEnumInPrisma.LESSON_MODULES,
+        'id',
+        data.lessonModulId,
+      );
     }
 
     try {
@@ -77,7 +107,12 @@ export class ExamResultsService {
   }
 
   async remove(id: string) {
-    await checkExistsResurs(this.prisma, ModelsEnumInPrisma.EXAM_RESULTS, 'id', id);
+    await checkExistsResurs(
+      this.prisma,
+      ModelsEnumInPrisma.EXAM_RESULTS,
+      'id',
+      id,
+    );
     try {
       const result = await this.prisma.examResult.delete({ where: { id } });
       return {

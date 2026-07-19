@@ -1,24 +1,96 @@
-import { existsSync, mkdirSync } from "fs";
-import { extname, join } from "path";
+import { existsSync, mkdirSync } from 'fs';
+import { extname, join } from 'path';
 
 export const imageExtensions = [
-    '.jpg', '.jpeg', '.png', '.gif', '.bmp', '.webp', '.svg',
-    '.tiff', '.ico', '.jfif', '.pjpeg', '.pjp', '.avif'
+  '.jpg',
+  '.jpeg',
+  '.png',
+  '.gif',
+  '.bmp',
+  '.webp',
+  '.svg',
+  '.tiff',
+  '.ico',
+  '.jfif',
+  '.pjpeg',
+  '.pjp',
+  '.avif',
 ];
 
 export const videoExtensions = [
-    '.mp4', '.avi', '.mov', '.mkv', '.flv', '.wmv', '.webm',
-    '.mpeg', '.mpg', '.3gp', '.3g2', '.mts', '.m2ts', '.vob',
-    '.ogv', '.ts', '.m4v'
+  '.mp4',
+  '.avi',
+  '.mov',
+  '.mkv',
+  '.flv',
+  '.wmv',
+  '.webm',
+  '.mpeg',
+  '.mpg',
+  '.3gp',
+  '.3g2',
+  '.mts',
+  '.m2ts',
+  '.vob',
+  '.ogv',
+  '.ts',
+  '.m4v',
 ];
 
-export const documentExtensions = ['.pdf','.doc','.docx','.xls','.xlsx','.ppt','.pptx','.txt','.rtf','.odt','.ods','.odp','.md','.csv','.json','.xml','.yml','.yaml','.epub','.js','.ts','.html','.css','.c','.cpp','.h','.hpp','.py','.java','.cs','.go','.rb','.php','.swift','.rs']
+export const documentExtensions = [
+  '.pdf',
+  '.doc',
+  '.docx',
+  '.xls',
+  '.xlsx',
+  '.ppt',
+  '.pptx',
+  '.txt',
+  '.rtf',
+  '.odt',
+  '.ods',
+  '.odp',
+  '.md',
+  '.csv',
+  '.json',
+  '.xml',
+  '.yml',
+  '.yaml',
+  '.epub',
+  '.js',
+  '.ts',
+  '.html',
+  '.css',
+  '.c',
+  '.cpp',
+  '.h',
+  '.hpp',
+  '.py',
+  '.java',
+  '.cs',
+  '.go',
+  '.rb',
+  '.php',
+  '.swift',
+  '.rs',
+];
 
 export const archiveExtensions = [
-    '.zip', '.rar', '.7z', '.tar', '.gz', '.bz2', '.xz',
-    '.iso', '.cab', '.lz', '.lzma', '.z', '.tgz', '.txz'
+  '.zip',
+  '.rar',
+  '.7z',
+  '.tar',
+  '.gz',
+  '.bz2',
+  '.xz',
+  '.iso',
+  '.cab',
+  '.lz',
+  '.lzma',
+  '.z',
+  '.tgz',
+  '.txz',
 ];
-
 
 export const mimeTypes: [string, string][] = [
   ['.avi', 'video/x-msvideo'],
@@ -41,11 +113,20 @@ export const mimeTypes: [string, string][] = [
 
   ['.pdf', 'application/pdf'],
   ['.doc', 'application/msword'],
-  ['.docx', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'],
+  [
+    '.docx',
+    'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+  ],
   ['.xls', 'application/vnd.ms-excel'],
-  ['.xlsx', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'],
+  [
+    '.xlsx',
+    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+  ],
   ['.ppt', 'application/vnd.ms-powerpoint'],
-  ['.pptx', 'application/vnd.openxmlformats-officedocument.presentationml.presentation'],
+  [
+    '.pptx',
+    'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+  ],
   ['.txt', 'text/plain'],
   ['.md', 'text/markdown'],
   ['.csv', 'text/csv'],
@@ -67,9 +148,8 @@ export const mimeTypes: [string, string][] = [
   ['.go', 'text/x-go-source'],
   ['.rb', 'text/x-ruby'],
   ['.php', 'application/x-httpd-php'],
-  ['.rs', 'text/x-rust']
+  ['.rs', 'text/x-rust'],
 ];
-
 
 export function getMymtype(fileName: string) {
   const ext = fileName.slice(fileName.lastIndexOf('.')).toLowerCase();

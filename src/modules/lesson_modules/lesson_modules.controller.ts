@@ -15,12 +15,12 @@ import { UpdateLessonModuleDto } from './dto/update-lesson_module.dto';
 export class LessonModulesController {
   constructor(private readonly lessonModulesService: LessonModulesService) {}
 
-  @Post("create")
-  create(@Body() data : CreateLessonModuleDto) {
+  @Post('create')
+  create(@Body() data: CreateLessonModuleDto) {
     return this.lessonModulesService.create(data);
   }
 
-  @Get("getall")
+  @Get('getall')
   findAll() {
     return this.lessonModulesService.findAll();
   }
@@ -31,10 +31,7 @@ export class LessonModulesController {
   }
 
   @Patch('update-one/:id')
-  update(
-    @Param('id') id: string,
-    @Body() data: UpdateLessonModuleDto,
-  ) {
+  update(@Param('id') id: string, @Body() data: UpdateLessonModuleDto) {
     return this.lessonModulesService.update(id, data);
   }
 

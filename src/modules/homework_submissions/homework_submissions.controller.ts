@@ -23,18 +23,23 @@ export class HomeworkSubmissionsController {
     private readonly homeworkSubmissionsService: HomeworkSubmissionsService,
   ) {}
 
-  @Post("create")
-  @ApiConsumes("multipart/form-data")
+  @Post('create')
+  @ApiConsumes('multipart/form-data')
   @ApiBody(homeworkSubmissionFileApiBody)
-  @UseInterceptors(FileInterceptor("files",fileStorages(["image","text","application","video"])))
+  @UseInterceptors(
+    FileInterceptor(
+      'files',
+      fileStorages(['image', 'text', 'application', 'video']),
+    ),
+  )
   create(
     @Body() data: CreateHomeworkSubmissionDto,
-    @UploadedFiles() files : Express.Multer.File[]
+    @UploadedFiles() files: Express.Multer.File[],
   ) {
     return this.homeworkSubmissionsService.create(data);
   }
 
-  @Get("get-all")
+  @Get('get-all')
   findAll() {
     return this.homeworkSubmissionsService.findAll();
   }

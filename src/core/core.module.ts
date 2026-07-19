@@ -12,9 +12,7 @@ import { AdminModule } from './admin/admin.module';
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: [
-        ".env",
-      ]
+      envFilePath: ['.env'],
     }),
     PrismaModule,
     JwtSubModule,
@@ -22,7 +20,7 @@ import { AdminModule } from './admin/admin.module';
     AuthModule,
     AdminModule,
   ],
-  controllers : [FileStreamerController],
-  providers : [FileStreamService]
+  controllers: [FileStreamerController],
+  providers: [FileStreamService],
 })
-export class CoreModule { }
+export class CoreModule {}

@@ -17,12 +17,12 @@ export class PurcachedCoursesController {
     private readonly purcachedCoursesService: PurcachedCoursesService,
   ) {}
 
-  @Post("create-one")
+  @Post('create-one')
   create(@Body() data: CreatePurcachedCourseDto) {
     return this.purcachedCoursesService.create(data);
   }
 
-  @Get("get-all")
+  @Get('get-all')
   findAll() {
     return this.purcachedCoursesService.findAll();
   }

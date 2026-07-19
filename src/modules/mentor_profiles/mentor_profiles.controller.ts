@@ -16,17 +16,17 @@ import { Public } from 'src/global/decorators/auth.decorators';
 export class MentorProfilesController {
   constructor(private readonly mentorProfilesService: MentorProfilesService) {}
 
-  @Post("create")
+  @Post('create')
   create(@Body() data: CreateMentorProfileDto) {
     return this.mentorProfilesService.create(data);
   }
 
   @Public()
-  @Get("getall")
+  @Get('getall')
   findAll() {
     return this.mentorProfilesService.findAll();
   }
-  
+
   @Public()
   @Get('get-one/:id')
   findOne(@Param('id') id: string) {

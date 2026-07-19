@@ -1,11 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import {
-  IsOptional,
-  IsString,
-  IsInt,
-  IsUrl,
-  IsUUID,
-} from 'class-validator';
+import { IsOptional, IsString, IsInt, IsUrl, IsUUID } from 'class-validator';
 
 export class CreateMentorProfileDto {
   @ApiProperty({

@@ -19,20 +19,25 @@ import { lessonApiBody } from 'src/common/types/api.body.types';
 
 @Controller('lessons')
 export class LessonsController {
-  constructor(private readonly lessonsService: LessonsService) { }
+  constructor(private readonly lessonsService: LessonsService) {}
 
-  @Post("create-one")
-  @ApiConsumes("multipart/form-data")
+  @Post('create-one')
+  @ApiConsumes('multipart/form-data')
   @ApiBody(lessonApiBody)
-  @UseInterceptors(FileInterceptor("video",fileStorages(["application", "image", "video","text"])))
+  @UseInterceptors(
+    FileInterceptor(
+      'video',
+      fileStorages(['application', 'image', 'video', 'text']),
+    ),
+  )
   create(
     @Body() data: CreateLessonDto,
-    @UploadedFile() video : Express.Multer.File
+    @UploadedFile() video: Express.Multer.File,
   ) {
-    return this.lessonsService.create(data,video.filename);
+    return this.lessonsService.create(data, video.filename);
   }
 
-  @Get("getall")
+  @Get('getall')
   findAll() {
     return this.lessonsService.findAll();
   }

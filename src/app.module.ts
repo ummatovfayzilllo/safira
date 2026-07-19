@@ -52,4 +52,4 @@ import { ContactModule } from './modules/contact/contact.module';
     },
   ],
 })
-export class AppModule { }
+export class AppModule {}

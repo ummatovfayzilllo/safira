@@ -15,7 +15,7 @@ export class JwtAuthGuard implements CanActivate {
   constructor(
     private readonly jwtSubService: JwtSubService,
     private readonly reflector: Reflector,
-  ) { }
+  ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     try {
@@ -59,5 +59,4 @@ export class JwtAuthGuard implements CanActivate {
       throw new UnauthorizedException('Invalid token or expired token!');
     }
   }
-
 }

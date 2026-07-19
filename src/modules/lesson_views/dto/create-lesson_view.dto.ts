@@ -1,13 +1,12 @@
-import { IsUUID } from "class-validator"
+import { IsUUID } from 'class-validator';
 
 export class CreateLessonViewDto {
-    @IsUUID()
-    userId : string
-    
-    @IsUUID()
-    lessonId : string
-}
+  @IsUUID()
+  userId: string;
 
+  @IsUUID()
+  lessonId: string;
+}
 
 /*
   userId    String

@@ -6,11 +6,9 @@ export class CreateCourseCategoryDto {
     description: 'Kurs kategoriyasi nomi',
     example: 'Dasturlash',
   })
-  @IsString({ message: 'name maydoni satr (string) bo\'lishi kerak' })
+  @IsString({ message: "name maydoni satr (string) bo'lishi kerak" })
   name: string;
 }
-
-
 
 /*
   @ApiProperty({

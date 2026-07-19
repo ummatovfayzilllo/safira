@@ -1,20 +1,26 @@
-import { IsBoolean, IsDateString, IsNotEmpty, IsOptional, IsString, IsUUID } from "class-validator"
+import {
+  IsBoolean,
+  IsDateString,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  IsUUID,
+} from 'class-validator';
 
 export class CreateQuestionDto {
-    
-    @IsUUID()
-    userId: string
+  @IsUUID()
+  userId: string;
 
-    @IsUUID()
-    courseId: string
+  @IsUUID()
+  courseId: string;
 
-    @IsString()
-    @IsNotEmpty()
-    text: string
+  @IsString()
+  @IsNotEmpty()
+  text: string;
 
-    @IsBoolean()
-    read: boolean
+  @IsBoolean()
+  read: boolean;
 
-    @IsDateString()
-    readAt : Date
+  @IsDateString()
+  readAt: Date;
 }

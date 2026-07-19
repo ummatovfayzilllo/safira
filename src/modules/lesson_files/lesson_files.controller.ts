@@ -21,19 +21,24 @@ import { lessonFileApiBody } from 'src/common/types/api.body.types';
 export class LeesonFilesController {
   constructor(private readonly lessonFilesService: LessonFilesService) {}
 
-  @Post("v1/create-one")
-  @ApiConsumes("multipart/form-data")
+  @Post('v1/create-one')
+  @ApiConsumes('multipart/form-data')
   @ApiBody(lessonFileApiBody)
-  @UseInterceptors(FileInterceptor("file" ,fileStorages(["application", "image", "video","text"])))
+  @UseInterceptors(
+    FileInterceptor(
+      'file',
+      fileStorages(['application', 'image', 'video', 'text']),
+    ),
+  )
   create(
     @Body() createLessonFileDto: CreateLessonFileDto,
-    @UploadedFile() file : Express.Multer.File
+    @UploadedFile() file: Express.Multer.File,
   ) {
-    let filename : string | undefined = file.filename
-    return this.lessonFilesService.create(createLessonFileDto,filename);
+    const filename: string | undefined = file.filename;
+    return this.lessonFilesService.create(createLessonFileDto, filename);
   }
 
-  @Get("v2/get-all")
+  @Get('v2/get-all')
   findAll() {
     return this.lessonFilesService.findAll();
   }

@@ -1,10 +1,13 @@
 import { ApiPropertyOptional } from '@nestjs/swagger';
 import { IsEnum, IsOptional, IsString, IsArray } from 'class-validator';
-import { ModelsEnumInPrisma } from 'src/common/types/global.types'; 
+import { ModelsEnumInPrisma } from 'src/common/types/global.types';
 import { Action } from '@prisma/client';
 
 export class UpdatePermissionDto {
-  @ApiPropertyOptional({ example: ModelsEnumInPrisma.COURSES, enum: ModelsEnumInPrisma })
+  @ApiPropertyOptional({
+    example: ModelsEnumInPrisma.COURSES,
+    enum: ModelsEnumInPrisma,
+  })
   @IsOptional()
   @IsEnum(ModelsEnumInPrisma)
   model?: ModelsEnumInPrisma;

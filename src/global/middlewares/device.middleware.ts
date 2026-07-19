@@ -24,15 +24,16 @@ export class DeviceMiddleware implements NestMiddleware {
     const agent = useragent.parse(userAgentString);
 
     const forwarded = req.headers['x-forwarded-for'];
-    const ip = typeof forwarded === 'string'
-      ? forwarded.split(',')[0].trim()
-      : req.socket.remoteAddress;
+    const ip =
+      typeof forwarded === 'string'
+        ? forwarded.split(',')[0].trim()
+        : req.socket.remoteAddress;
 
     req['device'] = {
       ip: ip,
       agent: `${agent.family} ${agent.major}.${agent.minor}.${agent.patch}`,
-      os: agent.os.toString(),           // qo‘shimcha: operatsion tizim
-      device: agent.device.toString(),   // qo‘shimcha: qurilma turi
+      os: agent.os.toString(), // qo‘shimcha: operatsion tizim
+      device: agent.device.toString(), // qo‘shimcha: qurilma turi
     };
 
     next();

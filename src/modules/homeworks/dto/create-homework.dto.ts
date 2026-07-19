@@ -1,9 +1,9 @@
-import { IsString, IsUUID } from "class-validator"
+import { IsString, IsUUID } from 'class-validator';
 
 export class CreateHomeworkDto {
-    @IsString()
-    task: string
+  @IsString()
+  task: string;
 
-    @IsUUID()
-    lessonId: string
+  @IsUUID()
+  lessonId: string;
 }

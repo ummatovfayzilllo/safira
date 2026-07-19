@@ -8,6 +8,7 @@ import {
   getToken,
   jwtTokenType,
   jwtTokenTypeEnum,
+  JwtPayload,
 } from 'src/common/config/jwt.secrets';
 
 @Injectable()
@@ -46,5 +47,9 @@ export class JwtSubService {
       type,
     );
     return result;
+  }
+
+  async verifyRefreshToken(token: string): Promise<JwtPayload> {
+    return this.verifyToken<JwtPayload>(token, jwtTokenTypeEnum.REFRESH);
   }
 }

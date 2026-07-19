@@ -21,18 +21,23 @@ import { fileStorages } from 'src/common/utils/file.storage';
 export class QuestionsController {
   constructor(private readonly questionsService: QuestionsService) {}
 
-  @Post("create")
-  @ApiConsumes("multipart/form-data")
+  @Post('create')
+  @ApiConsumes('multipart/form-data')
   @ApiBody(QuestionApiBody)
-  @UseInterceptors(FileInterceptor("files",fileStorages(["image","text","application","video"])))
+  @UseInterceptors(
+    FileInterceptor(
+      'files',
+      fileStorages(['image', 'text', 'application', 'video']),
+    ),
+  )
   create(
     @Body() data: CreateQuestionDto,
-    @UploadedFiles() files : Express.Multer.File[]
+    @UploadedFiles() files: Express.Multer.File[],
   ) {
-    return this.questionsService.create(data,files);
+    return this.questionsService.create(data, files);
   }
 
-  @Get("get-all")
+  @Get('get-all')
   findAll() {
     return this.questionsService.findAll();
   }
@@ -43,10 +48,7 @@ export class QuestionsController {
   }
 
   @Patch('update-one/:id')
-  update(
-    @Param('id') id: string,
-    @Body() data: UpdateQuestionDto,
-  ) {
+  update(@Param('id') id: string, @Body() data: UpdateQuestionDto) {
     return this.questionsService.update(id, data);
   }
 

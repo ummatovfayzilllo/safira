@@ -17,13 +17,13 @@ export class CourseCategoriesController {
     private readonly courseCategoriesService: CourseCategoriesService,
   ) {}
 
-  @Post("create")
+  @Post('create')
   create(@Body() data: CreateCourseCategoryDto) {
     return this.courseCategoriesService.create(data);
   }
 
   @Public()
-  @Get("get-all")
+  @Get('get-all')
   findAll() {
     return this.courseCategoriesService.findAll();
   }
@@ -35,10 +35,7 @@ export class CourseCategoriesController {
   }
 
   @Patch('update-one/:id')
-  update(
-    @Param('id') id: string,
-    @Body() data: CreateCourseCategoryDto,
-  ) {
+  update(@Param('id') id: string, @Body() data: CreateCourseCategoryDto) {
     return this.courseCategoriesService.update(id, data);
   }
 

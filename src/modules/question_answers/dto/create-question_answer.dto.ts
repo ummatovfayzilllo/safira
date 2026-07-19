@@ -1,15 +1,14 @@
-import { ApiProperty } from "@nestjs/swagger"
-import { IsNotEmpty, IsString, IsUUID } from "class-validator"
+import { ApiProperty } from '@nestjs/swagger';
+import { IsNotEmpty, IsString, IsUUID } from 'class-validator';
 
 export class CreateQuestionAnswerDto {
-    
-    @IsUUID()
-    userId: string
+  @IsUUID()
+  userId: string;
 
-    @IsUUID()
-    questionId: string
+  @IsUUID()
+  questionId: string;
 
-    @IsString()
-    @IsNotEmpty()
-    text: string
+  @IsString()
+  @IsNotEmpty()
+  text: string;
 }

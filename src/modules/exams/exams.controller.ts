@@ -15,12 +15,12 @@ import { UpdateExamDto } from './dto/update-exam.dto';
 export class ExamsController {
   constructor(private readonly examsService: ExamsService) {}
 
-  @Post("create")
+  @Post('create')
   create(@Body() data: CreateExamDto) {
     return this.examsService.create(data);
   }
 
-  @Get("get-all")
+  @Get('get-all')
   findAll() {
     return this.examsService.findAll();
   }

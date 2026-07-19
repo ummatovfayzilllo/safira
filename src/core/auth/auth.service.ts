@@ -145,4 +145,87 @@ export class AuthService {
       throw new UnauthorizedException("Email yoki parol noto'g'ri!");
     }
   }
+
+  async requestPasswordReset(email: string) {
+    const user = await this.userService.findByEmail(email);
+
+    if (!user) {
+      throw new BadRequestException("Bu emailda foydalanuvchi topilmadi!");
+    }
+
+    const code = this.generateOtpCode();
+    const signature = this.generateOtpSignature(email, code);
+    const ttl = Date.now() + this.otpTtl;
+
+    await this.emailService.sendResedPasswordVerify(
+      email,
+      code,
+      EmailCodeEnum.RESET_PASSWORD,
+    );
+
+    this.cacheService.set(
+      `reset_${email}`,
+      {
+        fullname: user.fullName || '',
+        email: user.email,
+        password: user.password,
+        code,
+        signature,
+      },
+      this.otpTtl,
+    );
+
+    return {
+      message: 'Parol o\'zgartirishni tasdiqlovchi kod emailingizga yuborildi',
+      data: {
+        email,
+        expiresIn: Math.floor((ttl - Date.now()) / (1000 * 60)),
+      },
+    };
+  }
+
+  async verifyPasswordReset(email: string, code: number, newPassword: string) {
+    const cachedData = this.cacheService.get(`reset_${email}`);
+
+    if (!cachedData) {
+      throw new BadRequestException(`${email} uchun tasdiq ma'lumotlari topilmadi!`);
+    }
+
+    if (cachedData.code !== code) {
+      throw new UnauthorizedException("Tasdiq kodi noto'g'ri!");
+    }
+
+    if (!this.verifyOtpSignature(email, code, cachedData.signature)) {
+      throw new UnauthorizedException('Tasdiq kodi ishonchsiz!');
+    }
+
+    this.cacheService.delete(`reset_${email}`);
+
+    await this.userService.updatePassword(email, newPassword);
+
+    return {
+      message: 'Parolingiz muvaffaqiyatli o\'zgartirildi',
+      data: {
+        email,
+      },
+    };
+  }
+
+  async refreshTokens(refreshToken: string) {
+    try {
+      const decoded = await this.jwtService.verifyRefreshToken(refreshToken);
+      const user = await this.userService.findById(decoded.id);
+
+      if (!user) {
+        throw new UnauthorizedException('Foydalanuvchi topilmadi!');
+      }
+
+      return {
+        accessToken: await this.jwtService.getAccessToken(user),
+        refreshToken: await this.jwtService.getRefreshToken(user),
+      };
+    } catch (error) {
+      throw new UnauthorizedException('Refresh token noto\'g\'ri yoki expired!');
+    }
+  }
 }
