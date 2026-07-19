@@ -100,7 +100,7 @@ export function Header({ onMenuClick }: HeaderProps) {
                 </Link>
                 
                 <Link
-                  href="/dashboard"
+                  href="/dashboard/profile"
                   className="flex items-center space-x-2 px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg transition text-sm"
                   onClick={() => setIsDropdownOpen(false)}
                 >
@@ -109,7 +109,7 @@ export function Header({ onMenuClick }: HeaderProps) {
                 </Link>
 
                 <Link
-                  href="/dashboard"
+                  href="/dashboard/profile"
                   className="flex items-center space-x-2 px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg transition text-sm"
                   onClick={() => setIsDropdownOpen(false)}
                 >

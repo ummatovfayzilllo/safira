@@ -16,6 +16,7 @@ const menuSections = [
     items: [
       { icon: '📊', label: 'Dashboard', href: '/dashboard' },
       { icon: '📚', label: 'Mening Kurslarim', href: '/dashboard/my-courses' },
+      { icon: '👤', label: 'Profil', href: '/dashboard/profile' },
     ],
   },
   {
