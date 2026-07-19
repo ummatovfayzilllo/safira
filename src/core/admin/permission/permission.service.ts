@@ -13,8 +13,10 @@ export class PermissionService {
     });
   }
 
-  async findAll() {
-    return await this.prisma.permission.findMany();
+  async findAll(currentUserId?: string) {
+    const permissions = await this.prisma.permission.findMany();
+    if (!currentUserId) return permissions;
+    return permissions.filter(p => p.userId !== currentUserId);
   }
 
   async findOne(id: string) {

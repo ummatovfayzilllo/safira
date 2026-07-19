@@ -23,8 +23,12 @@ export class JwtAuthGuard implements CanActivate {
         context.getHandler(),
         context.getClass(),
       ]);
-      if (isPublic) return true;
       const req = context.switchToHttp().getRequest();
+
+      if (isPublic) {
+        await this.tryExtractUser(req, context);
+        return true;
+      }
 
       await this.getPayload(req, context);
       return true;
@@ -32,6 +36,30 @@ export class JwtAuthGuard implements CanActivate {
       throw error;
     }
   }
+  async tryExtractUser(req: Request, ctx: ExecutionContext) {
+    let token: string | undefined;
+
+    const auth = req.headers.authorization;
+    if (auth && auth.startsWith('Bearer ')) {
+      token = auth.split(' ')[1];
+    }
+
+    if (!token && req.cookies?.accessToken) {
+      token = req.cookies.accessToken;
+    }
+
+    if (token) {
+      try {
+        const user: JwtPayload = await this.jwtSubService.verifyToken<JwtPayload>(
+          token,
+          jwtTokenTypeEnum.ACCESS,
+        );
+        req['user'] = user;
+      } catch (error) {
+      }
+    }
+  }
+
   async getPayload(req: Request, ctx: ExecutionContext) {
     let token: string | undefined;
 

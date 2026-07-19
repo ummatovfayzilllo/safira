@@ -10,7 +10,8 @@ import {
 import { MentorProfilesService } from './mentor_profiles.service';
 import { CreateMentorProfileDto } from './dto/create-mentor_profile.dto';
 import { UpdateMentorProfileDto } from './dto/update-mentor_profile.dto';
-import { Public } from 'src/global/decorators/auth.decorators';
+import { Public, UserData } from 'src/global/decorators/auth.decorators';
+import { JwtPayload } from 'src/common/types/jwt.types';
 
 @Controller('mentor-profiles')
 export class MentorProfilesController {
@@ -23,8 +24,9 @@ export class MentorProfilesController {
 
   @Public()
   @Get('getall')
-  findAll() {
-    return this.mentorProfilesService.findAll();
+  findAll(@UserData() user?: JwtPayload) {
+    const currentUserId = user?.id;
+    return this.mentorProfilesService.findAll(currentUserId);
   }
 
   @Public()

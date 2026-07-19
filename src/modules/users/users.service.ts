@@ -85,10 +85,32 @@ export class UsersService {
     };
   }
 
-  async findOne(id: string) {
+  async findOne(id: string, includeMentorProfile: boolean = false) {
+    const select = includeMentorProfile
+      ? {
+          ...userFindOneEntity,
+          mentorProfile: {
+            select: {
+              id: true,
+              about: true,
+              job: true,
+              experience: true,
+              telegram: true,
+              instagram: true,
+              linkedin: true,
+              facebook: true,
+              github: true,
+              website: true,
+              createdAt: true,
+              updatedAt: true,
+            },
+          },
+        }
+      : userFindOneEntity;
+
     const user = await this.prisma.user.findFirst({
       where: { id: id },
-      select: userFindOneEntity,
+      select: select,
     });
     if (!user) {
       throw new NotFoundException('User not found ');
@@ -178,6 +200,13 @@ export class UsersService {
   }
 
   async findByEmail(email: string): Promise<User> {
+    const user= await this.prisma.user.findFirst({
+      where : {
+        email : email
+      }
+    })
+    console.log("UserService findByEmail ",email,user)
+    
     return checkExistsResurs<User>(
       this.prisma,
       ModelsEnumInPrisma.USERS,

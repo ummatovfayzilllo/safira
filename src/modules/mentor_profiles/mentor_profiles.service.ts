@@ -42,13 +42,16 @@ export class MentorProfilesService {
     };
   }
 
-  async findAll() {
+  async findAll(currentUserId?: string) {
     const mentorProfiles = await this.prisma.mentorProfile.findMany({
       include: { user: { select: userFindOneEntity } },
     });
+    const filtered = currentUserId
+      ? mentorProfiles.filter(profile => profile.userId !== currentUserId)
+      : mentorProfiles;
     return {
       message: `This action returns all mentorProfiles`,
-      data: mentorProfiles,
+      data: filtered,
     };
   }
 

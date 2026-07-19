@@ -78,7 +78,7 @@ export class UsersController {
   @Get('get-my')
   getMy(@UserData() user: JwtPayload) {
     console.log(user);
-    return this.usersService.findOne(user.id);
+    return this.usersService.findOne(user.id, true);
   }
 
   @Patch(':id')

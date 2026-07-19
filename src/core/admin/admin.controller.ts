@@ -11,10 +11,11 @@ import {
 import { AdminService } from './admin.service';
 import { CreateAdminDto } from './dto/create-admin.dto';
 import { CreateNewUserDto } from './dto/create-new-user.dto';
-import { Permission, Public } from 'src/global/decorators/auth.decorators';
+import { Permission, Public, UserData } from 'src/global/decorators/auth.decorators';
 import { PermissionService } from './permission/permission.service';
 import { CreatePermissionDto } from './dto/create-permission.dto';
 import { UpdatePermissionDto } from './dto/update-permission';
+import { JwtPayload } from 'src/common/types/jwt.types';
 
 @Controller('admin')
 @Public()
@@ -45,6 +46,17 @@ export class AdminController {
     @Param('permissionId') id: string,
   ) {
     return this.permissionService.update(id, data);
+  }
+
+  @Get('getall-permission')
+  getAllPermission(@UserData() user?: JwtPayload) {
+    const currentUserId = user?.id;
+    return this.permissionService.findAll(currentUserId);
+  }
+
+  @Get('get-one-permission/:permissionId')
+  getOnePermission(@Param('permissionId') id: string) {
+    return this.permissionService.findOne(id);
   }
 
   @Get('getall-staff')
