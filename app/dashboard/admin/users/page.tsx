@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuthStore } from '@/features/stores';
 import { DashboardLayout } from '@/components/DashboardLayout';
@@ -25,6 +25,7 @@ interface CreateUserForm {
 export default function UsersPage() {
   const router = useRouter();
   const { user, accessToken } = useAuthStore();
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
@@ -38,6 +39,7 @@ export default function UsersPage() {
     password: '',
     role: 'STUDENT',
   });
+  const [imagePreview, setImagePreview] = useState('');
   const [formError, setFormError] = useState('');
   const [formLoading, setFormLoading] = useState(false);
   const [formSuccess, setFormSuccess] = useState(false);
@@ -79,6 +81,17 @@ export default function UsersPage() {
     }
   };
 
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   const handleFormChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
@@ -112,20 +125,24 @@ export default function UsersPage() {
     setFormLoading(true);
 
     try {
+      // FormData bilan yuborish (/admin/new-user endpoint)
+      const submitData = new FormData();
+      submitData.append('fullName', formData.fullName);
+      submitData.append('email', formData.email);
+      submitData.append('password', formData.password);
+      submitData.append('role', formData.role);
+      if (fileInputRef.current?.files?.[0]) {
+        submitData.append('image', fileInputRef.current.files[0]);
+      }
+
       const response = await fetch(
-        'http://localhost:15975/api/users/create',
+        'http://localhost:15975/api/admin/new-user',
         {
           method: 'POST',
           headers: {
             'Authorization': `Bearer ${accessToken}`,
-            'Content-Type': 'application/json',
           },
-          body: JSON.stringify({
-            fullName: formData.fullName,
-            email: formData.email,
-            password: formData.password,
-            role: formData.role,
-          }),
+          body: submitData,
         }
       );
 
@@ -137,6 +154,10 @@ export default function UsersPage() {
           password: '',
           role: 'STUDENT',
         });
+        setImagePreview('');
+        if (fileInputRef.current) {
+          fileInputRef.current.value = '';
+        }
         setTimeout(() => {
           setShowModal(false);
           fetchUsers(); // Refresh users list
@@ -303,6 +324,40 @@ export default function UsersPage() {
                   {formError}
                 </div>
               )}
+
+              {/* Image Upload */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Profil Rasmi (ixtiyoriy)
+                </label>
+                <div className="flex items-center gap-3">
+                  <div className="w-12 h-12 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full flex items-center justify-center text-white font-bold">
+                    {imagePreview ? (
+                      <img
+                        src={imagePreview}
+                        alt="Preview"
+                        className="w-full h-full rounded-full object-cover"
+                      />
+                    ) : (
+                      formData.fullName?.charAt(0).toUpperCase() || '?'
+                    )}
+                  </div>
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageChange}
+                    className="hidden"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => fileInputRef.current?.click()}
+                    className="text-sm text-blue-600 hover:text-blue-700 font-medium"
+                  >
+                    Rasm Yuklash
+                  </button>
+                </div>
+              </div>
 
               {/* Full Name */}
               <div>
