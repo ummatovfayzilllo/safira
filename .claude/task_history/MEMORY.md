@@ -1,0 +1,4 @@
+- [Auth System Implementation](auth_system.md) — Complete auth flow with login, register, dashboard
+- [Sidebar & Profile Setup](2026-07-19-sidebar-profile.md) — Sidebar navigation + profile completion
+- [Profile CRUD](2026-07-19-profile-crud.md) — Edit profile, reset password, delete account
+- [Admin Users Management](2026-07-19-admin-users.md) — Users table + create user modal with image upload

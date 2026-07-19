@@ -32,6 +32,16 @@
 - [x] Form Validation & Error Handling
 - [x] Navigation Links Updated (Header + Sidebar)
 
+### Admin Users Management
+- [x] Users Table with all users
+- [x] Create User Modal Form
+- [x] Image Upload (optional)
+- [x] Role Selection (4 roles)
+- [x] Smart Content-Type (FormData/JSON)
+- [x] Admin Access Control
+- [x] Auto-Refresh Users List
+- [x] Error & Success Messages
+
 ### Pages
 | Page | Route | Status | Notes |
 |------|-------|--------|-------|
@@ -53,6 +63,7 @@
 | Contact | `/dashboard/contact` | ✅ | Contact form |
 | Profile | `/dashboard/profile` | ✅ | Edit name, image, password |
 | Delete Account | `/dashboard/profile/delete` | ✅ | Permanent account deletion |
+| Admin Users | `/dashboard/admin/users` | ✅ | Users table + create modal |
 
 ---
 
@@ -96,11 +107,11 @@
 
 ## 📊 Stats
 
-- **Total Pages:** 18 pages
+- **Total Pages:** 19 pages
 - **Components:** 3 (Header, Sidebar, DashboardLayout)
-- **Total Commits:** 7
-- **Lines Added:** 2,498+
-- **Features:** Auth flow, Sidebar nav, Profile setup, Profile CRUD, Layout system
+- **Total Commits:** 11
+- **Lines Added:** 2,900+
+- **Features:** Auth flow, Sidebar nav, Profile setup, Profile CRUD, Admin Users, Layout system
 - **Tests:** Manual (browser)
 - **Linter:** ESLint configured (`npm run lint`)
 
