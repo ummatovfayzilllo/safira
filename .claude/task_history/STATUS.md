@@ -42,6 +42,30 @@
 - [x] Auto-Refresh Users List
 - [x] Error & Success Messages
 
+### Mentor CRUD - Categories
+- [x] Categories Grid Display
+- [x] Create Category Modal
+- [x] Edit Category
+- [x] Delete Category with Confirmation
+- [x] Form Validation
+- [x] Success/Error Messages
+- [x] Auto-Refresh List
+
+### Mentor CRUD - Courses
+- [x] Courses Grid Display
+- [x] Create Course Modal (Advanced)
+- [x] Form Fields: name, about, price, discount, category, level
+- [x] Banner Image Upload (optional)
+- [x] Intro Video Upload (optional)
+- [x] Published Checkbox
+- [x] Dynamic Category Selector
+- [x] Level Dropdown (5 levels)
+- [x] FormData with Files
+- [x] Form Validation
+- [x] Success/Error Messages
+- [x] Auto-Refresh Courses
+- [x] Edit/Delete Buttons (UI ready)
+
 ### Pages
 | Page | Route | Status | Notes |
 |------|-------|--------|-------|
@@ -64,6 +88,8 @@
 | Profile | `/dashboard/profile` | ✅ | Edit name, image, password |
 | Delete Account | `/dashboard/profile/delete` | ✅ | Permanent account deletion |
 | Admin Users | `/dashboard/admin/users` | ✅ | Users table + create modal |
+| Mentor Categories | `/dashboard/mentor/categories` | ✅ | Categories CRUD |
+| Mentor Courses | `/dashboard/mentor/courses` | ✅ | Courses CRUD with files |
 
 ---
 
@@ -107,11 +133,11 @@
 
 ## 📊 Stats
 
-- **Total Pages:** 19 pages
+- **Total Pages:** 21 pages
 - **Components:** 3 (Header, Sidebar, DashboardLayout)
-- **Total Commits:** 11
-- **Lines Added:** 2,900+
-- **Features:** Auth flow, Sidebar nav, Profile setup, Profile CRUD, Admin Users, Layout system
+- **Total Commits:** 13
+- **Lines Added:** 3,688+
+- **Features:** Auth, Sidebar nav, Profile CRUD, Admin Users, Mentor CRUD (Categories + Courses)
 - **Tests:** Manual (browser)
 - **Linter:** ESLint configured (`npm run lint`)
 
