@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useAuthStore } from '@/features/stores';
 import { useLogout } from '@/features';
+import { useTheme } from '@/app/theme-context';
 
 interface HeaderProps {
   onMenuClick?: () => void;
@@ -14,6 +15,7 @@ export function Header({ onMenuClick }: HeaderProps) {
   const router = useRouter();
   const logout = useLogout();
   const { user } = useAuthStore();
+  const { theme, toggleTheme } = useTheme();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -36,7 +38,7 @@ export function Header({ onMenuClick }: HeaderProps) {
   };
 
   return (
-    <header className="fixed top-0 left-0 right-0 h-16 bg-white border-b border-gray-200 z-50">
+    <header className="fixed top-0 left-0 right-0 h-16 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 z-50 transition-colors duration-300">
       <div className="flex items-center justify-between h-full px-4 md:px-6">
         {/* Logo & Mobile Menu */}
         <div className="flex items-center space-x-4">
@@ -56,20 +58,31 @@ export function Header({ onMenuClick }: HeaderProps) {
           </Link>
         </div>
 
-        {/* User Profile Dropdown */}
-        <div className="relative" ref={dropdownRef}>
+        {/* Theme Toggle & User Profile */}
+        <div className="flex items-center space-x-3">
+          {/* Theme Toggle */}
+          <button
+            onClick={toggleTheme}
+            className="p-2 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition"
+            title={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
+          >
+            {theme === 'light' ? '🌙' : '☀️'}
+          </button>
+
+          {/* User Profile Dropdown */}
+          <div className="relative" ref={dropdownRef}>
           <button
             onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-            className="flex items-center space-x-3 p-2 hover:bg-gray-100 rounded-lg transition"
+            className="flex items-center space-x-3 p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition"
           >
             <div className="w-8 h-8 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full flex items-center justify-center text-white font-bold text-sm flex-shrink-0">
               {user?.fullName?.charAt(0).toUpperCase() || 'U'}
             </div>
             <div className="hidden sm:block text-left">
-              <p className="text-sm font-semibold text-gray-900 line-clamp-1">
+              <p className="text-sm font-semibold text-gray-900 dark:text-gray-50 line-clamp-1">
                 {user?.fullName || 'Foydalanuvchi'}
               </p>
-              <p className="text-xs text-gray-500">{user?.role || 'STUDENT'}</p>
+              <p className="text-xs text-gray-500 dark:text-gray-400">{user?.role || 'STUDENT'}</p>
             </div>
             <span className={`text-lg transition ${isDropdownOpen ? 'rotate-180' : ''}`}>
               ▼
@@ -131,6 +144,7 @@ export function Header({ onMenuClick }: HeaderProps) {
               </button>
             </div>
           )}
+          </div>
         </div>
       </div>
     </header>
