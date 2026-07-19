@@ -1,0 +1,4 @@
+-- AlterTable
+ALTER TABLE "courses" ALTER COLUMN "published" DROP NOT NULL,
+ALTER COLUMN "updatedAt" DROP NOT NULL,
+ALTER COLUMN "createdAt" DROP NOT NULL;
