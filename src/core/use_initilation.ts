@@ -3,13 +3,14 @@ import {
   INestApplication,
   BadRequestException,
 } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { MulterValidationExceptionFilter } from './error/validation.filter';
 import { SwaggerTheme, SwaggerThemeNameEnum } from 'swagger-themes';
 import * as cookieParser from 'cookie-parser';
 import { DeviceMiddleware } from 'src/global/middlewares/device.middleware';
 
-export const initGlobalApp = (app: INestApplication) => {
+export const initGlobalApp = (app: INestApplication, configService?: ConfigService) => {
   const config = new DocumentBuilder()
     .setTitle('Edfix Clone API')
     .setDescription('Education Management System - API Documentation')
@@ -66,10 +67,19 @@ export const initGlobalApp = (app: INestApplication) => {
   app.useGlobalFilters(new MulterValidationExceptionFilter());
 
   // CORS Configuration
+  const allowedOriginsEnv = configService?.get('ALLOWED_ORIGINS') || '';
+  const allowedOrigins = allowedOriginsEnv
+    .split(',')
+    .map((origin) => origin.trim())
+    .filter((origin) => origin.length > 0);
+
   app.enableCors({
     origin: (origin, callback) => {
-      // TODO: Development - all origins allowed. Production: configure allowed origins
-      callback(null, true);
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error(`CORS: ${origin} ruxsati yo'q`), false);
+      }
     },
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],

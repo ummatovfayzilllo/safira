@@ -228,4 +228,10 @@ export class AuthService {
       throw new UnauthorizedException('Refresh token noto\'g\'ri yoki expired!');
     }
   }
+
+  async logout() {
+    return {
+      message: 'Siz tizimdan muvaffaqiyatli chiqtingiz',
+    };
+  }
 }

@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Res, HttpStatus, Req, UnauthorizedException } from '@nestjs/common';
+import { Controller, Post, Body, Res, HttpStatus, Req, UnauthorizedException, Get } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { Response, Request } from 'express';
 import { AuthService } from './auth.service';
@@ -10,12 +10,12 @@ import { RefreshTokenDto, TokenResponseDto } from './dto/refresh-token.dto';
 import { Public } from 'src/global/decorators/auth.decorators';
 
 @ApiTags('auth')
-@Public()
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post('register')
+  @Public()
   @ApiOperation({
     summary: "Ro'yxatdan o'tish (tasdiq kodini emailga yuboradi)",
   })
@@ -33,6 +33,7 @@ export class AuthController {
   }
 
   @Post('verify')
+  @Public()
   @ApiOperation({ summary: 'Tasdiq kodini tekshirish va tokenlarni olish' })
   @ApiResponse({
     status: HttpStatus.CREATED,
@@ -61,6 +62,7 @@ export class AuthController {
   }
 
   @Post('login')
+  @Public()
   @ApiOperation({ summary: 'Kirish (email va parol)' })
   @ApiResponse({
     status: HttpStatus.CREATED,
@@ -88,6 +90,7 @@ export class AuthController {
   }
 
   @Post('reset-password')
+  @Public()
   @ApiOperation({ summary: 'Parol yangilash - tasdiq kodi yuborish' })
   @ApiResponse({
     status: HttpStatus.CREATED,
@@ -103,6 +106,7 @@ export class AuthController {
   }
 
   @Post('reset-password/verify')
+  @Public()
   @ApiOperation({ summary: 'Parolni yangilash - tasdiq kodi tekshirish' })
   @ApiResponse({
     status: HttpStatus.CREATED,
@@ -126,6 +130,7 @@ export class AuthController {
   }
 
   @Post('refresh-token')
+  @Public()
   @ApiOperation({ summary: 'Yangi access token olish (refresh token bilan)' })
   @ApiResponse({
     status: HttpStatus.CREATED,
@@ -165,5 +170,19 @@ export class AuthController {
       sameSite: 'strict',
     });
     res.status(HttpStatus.CREATED).send({ accessToken, refreshToken });
+  }
+
+  @Post('logout')
+  @ApiOperation({ summary: 'Tizimdan chiqish' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Muvaffaqiyatli chiqtingiz. Cookies o\'chirildi',
+  })
+  async logout(@Res() res: Response) {
+    const result = await this.authService.logout();
+
+    res.clearCookie('accessToken');
+    res.clearCookie('refreshToken');
+    res.status(HttpStatus.OK).send(result);
   }
 }
