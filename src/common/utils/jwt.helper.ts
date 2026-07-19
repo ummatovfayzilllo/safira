@@ -1,28 +1,7 @@
 import { ConfigService } from '@nestjs/config';
 import { JwtService, JwtSignOptions } from '@nestjs/jwt';
-import { Role } from '@prisma/client';
+import { jwtTokenType, jwtTokenTypeEnum } from '../types/jwt.types';
 
-// alias type
-export type jwtTokenType = 'ACCESS' | 'REFRESH';
-
-// payload  interface
-export interface JwtPayload {
-  id: string;
-  role: Role;
-}
-export interface JwtVerfyPayload {
-  email: string;
-  code: number;
-  ip: string;
-  agent: string;
-}
-// token type alias enum
-export const enum jwtTokenTypeEnum {
-  ACCESS = 'ACCESS',
-  REFRESH = 'REFRESH',
-}
-
-//  secret and  ecpiresin
 export const getJwtOptions = (
   config: ConfigService,
   type: jwtTokenType = jwtTokenTypeEnum.ACCESS,
@@ -34,10 +13,9 @@ export const getJwtOptions = (
   return options;
 };
 
-// token generate function
 export const getToken = async (
   jwtService: JwtService,
-  payload: JwtPayload | JwtVerfyPayload,
+  payload: any,
   config: ConfigService,
   type: jwtTokenType = jwtTokenTypeEnum.ACCESS,
 ) => {

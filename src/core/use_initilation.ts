@@ -33,11 +33,11 @@ export const initGlobalApp = (app: INestApplication) => {
   
     app.enableCors({
       origin: (origin, callback) => {
-        const allowedOrigins = [
-          "http://localhost:5173",
-          "https://safira.uz",
-        ];
-        console.log(origin)  
+        // const allowedOrigins : string[] = [
+        //   "http://localhost:5173",
+        //   "https://safira.uz",
+        // ];
+        // console.log(origin, "useInitil state",allowedOrigins)  
         callback(null,true);  
         // if (!origin || allowedOrigins.includes(origin)) {
         //   callback(null, true);

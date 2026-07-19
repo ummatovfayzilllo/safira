@@ -3,11 +3,11 @@ import { CreateHomeworkSubmissionDto } from './dto/create-homework_submission.dt
 import { UpdateHomeworkSubmissionDto } from './dto/update-homework_submission.dto';
 import { PrismaService } from 'src/core/prisma/prisma.service';
 import { ConfigService } from '@nestjs/config';
-import { urlGenerator } from 'src/common/types/generator.types';
-import { checkExistsResurs } from 'src/common/types/check.functions.types';
+import { urlGenerator } from 'src/common/utils/generators';
+import { checkExistsResurs } from 'src/common/utils/check.functions';
 import { ModelsEnumInPrisma } from 'src/common/types/global.types';
 import { HomeworkSubmission } from '@prisma/client';
-import { unlinkFile } from 'src/common/types/file.cotroller.typpes';
+import { unlinkFile } from 'src/common/utils/file.helpers';
 
 @Injectable()
 export class HomeworkSubmissionsService {

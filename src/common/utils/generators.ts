@@ -1,8 +1,8 @@
 import { ConfigService } from "@nestjs/config";
-import { EmailCodeEnum } from "./enum.types";
-import { extname, join } from "path";
-import { archiveExtensions, documentExtensions, getMymtype, imageExtensions, videoExtensions } from "./filter.file.types";
-import { createReadStream, existsSync, mkdirSync } from "fs";
+import { EmailCodeEnum } from "../types/enum.types";
+import { extname, join } from "node:path";
+import { archiveExtensions, documentExtensions, getMymtype, imageExtensions, videoExtensions } from "../types/filter.file.types";
+import { createReadStream, existsSync, mkdirSync } from "node:fs";
 import { Response } from "express";
 import { statfs ,stat} from "fs/promises";
 

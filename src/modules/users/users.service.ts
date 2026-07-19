@@ -3,12 +3,12 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { PrismaService } from 'src/core/prisma/prisma.service';
 import { ConfigService } from '@nestjs/config';
-import { urlGenerator } from 'src/common/types/generator.types';
-import { checAlreadykExistsResurs, checkExistsResurs } from 'src/common/types/check.functions.types';
+import { urlGenerator } from 'src/common/utils/generators';
+import { checAlreadykExistsResurs, checkExistsResurs } from 'src/common/utils/check.functions';
 import { ModelsEnumInPrisma } from 'src/common/types/global.types';
 import { userFindOneEntity } from './entities/user.entity';
 import { User } from '@prisma/client';
-import { unlinkFile } from 'src/common/types/file.cotroller.typpes';
+import { unlinkFile } from 'src/common/utils/file.helpers';
 import * as bcrypt from "bcrypt"
 
 @Injectable()

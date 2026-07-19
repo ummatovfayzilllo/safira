@@ -2,7 +2,7 @@ import { HttpException, Injectable } from '@nestjs/common';
 import { CreateCourseCategoryDto } from './dto/create-course_category.dto';
 import { UpdateCourseCategoryDto } from './dto/update-course_category.dto';
 import { PrismaService } from 'src/core/prisma/prisma.service';
-import { checAlreadykExistsResurs, checkExistsResurs } from 'src/common/types/check.functions.types';
+import { checAlreadykExistsResurs, checkExistsResurs } from 'src/common/utils/check.functions';
 import { ModelsEnumInPrisma } from 'src/common/types/global.types';
 
 @Injectable()

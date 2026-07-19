@@ -4,11 +4,11 @@ import { LoginDto } from './dto/login.dto';
 import { CacheService } from './cache.service';
 import { UsersService } from 'src/modules/users/users.service';
 import { EmailService } from '../email/email.service';
-import { EmailCodeEnum } from '../../common/types/enum.types';
+import { EmailCodeEnum } from 'src/common/types/enum.types';
 import { JwtSubService } from '../jwt/jwt.service';
-import { checAlreadykExistsResurs } from '../../common/types/check.functions.types';
+import { checAlreadykExistsResurs } from 'src/common/utils/check.functions';
 import { PrismaService } from '../prisma/prisma.service';
-import { ModelsEnumInPrisma } from '../../common/types/global.types';
+import { ModelsEnumInPrisma } from 'src/common/types/global.types';
 import { ConfigService } from '@nestjs/config';
 
 @Injectable()

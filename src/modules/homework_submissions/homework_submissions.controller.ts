@@ -15,7 +15,7 @@ import { UpdateHomeworkSubmissionDto } from './dto/update-homework_submission.dt
 import { ApiBody, ApiConsumes } from '@nestjs/swagger';
 import { homeworkSubmissionFileApiBody } from 'src/common/types/api.body.types';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { fileStorages } from 'src/common/types/upload_types';
+import { fileStorages } from 'src/common/utils/file.storage';
 
 @Controller('homework-submissions')
 export class HomeworkSubmissionsController {

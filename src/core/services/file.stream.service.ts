@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { Response } from "express";
 import { existsSync } from 'fs';
-import { getPathInFileType, headerDataStream } from "../../common/types/generator.types";
+import { getPathInFileType, headerDataStream } from "src/common/utils/generators";
 import { join } from "path";
 
 @Injectable()

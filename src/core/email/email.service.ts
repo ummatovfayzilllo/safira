@@ -2,8 +2,8 @@
 
 import { Injectable } from '@nestjs/common';
 import * as nodemailer from 'nodemailer';
-import { EmailCodeEnum } from '../../common/types/enum.types';
-import { messageGenerator } from '../../common/types/generator.types';
+import { EmailCodeEnum } from 'src/common/types/enum.types';
+import { messageGenerator } from 'src/common/utils/generators';
 
 @Injectable()
 export class EmailService {

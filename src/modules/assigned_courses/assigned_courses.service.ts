@@ -3,7 +3,7 @@ import { CreateAssignedCourseDto } from './dto/create-assigned_course.dto';
 import { UpdateAssignedCourseDto } from './dto/update-assigned_course.dto';
 import { PrismaService } from 'src/core/prisma/prisma.service';
 import { ConfigService } from '@nestjs/config';
-import { checkExistsResurs } from 'src/common/types/check.functions.types';
+import { checkExistsResurs } from 'src/common/utils/check.functions';
 import { ModelsEnumInPrisma } from 'src/common/types/global.types';
 
 @Injectable()

@@ -18,10 +18,10 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiBearerAuth, ApiBody, ApiConsumes, ApiExcludeEndpoint } from '@nestjs/swagger';
 import {
   fileStorages,
-} from 'src/common/types/upload_types';
+} from 'src/common/utils/file.storage';
 import { userApiBody } from 'src/common/types/api.body.types';
 import { Public, UserData } from 'src/global/decorators/auth.decorators';
-import { JwtPayload } from 'src/common/types/jwt.typs';
+import { JwtPayload } from 'src/common/types/jwt.types';
 
 
 @ApiBearerAuth()

@@ -3,8 +3,8 @@ import { CreateLessonDto } from './dto/create-lesson.dto';
 import { UpdateLessonDto } from './dto/update-lesson.dto';
 import { PrismaService } from 'src/core/prisma/prisma.service';
 import { ConfigService } from '@nestjs/config';
-import { urlGenerator } from 'src/common/types/generator.types';
-import { checAlreadykExistsResurs, checkExistsResurs } from 'src/common/types/check.functions.types';
+import { urlGenerator } from 'src/common/utils/generators';
+import { checAlreadykExistsResurs, checkExistsResurs } from 'src/common/utils/check.functions';
 import { ModelsEnumInPrisma } from 'src/common/types/global.types';
 
 @Injectable()

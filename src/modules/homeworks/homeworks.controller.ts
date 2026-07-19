@@ -14,7 +14,7 @@ import { CreateHomeworkDto } from './dto/create-homework.dto';
 import { UpdateHomeworkDto } from './dto/update-homework.dto';
 import { ApiBody, ApiConsumes } from '@nestjs/swagger';
 import { FilesInterceptor } from '@nestjs/platform-express';
-import { fileStorages } from 'src/common/types/upload_types';
+import { fileStorages } from 'src/common/utils/file.storage';
 import { homeworkFIleApiBody } from 'src/common/types/api.body.types';
 
 @Controller('homeworks')

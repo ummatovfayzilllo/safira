@@ -15,7 +15,7 @@ import { CoursesService } from './courses.service';
 import { CreateCourseDto } from './dto/create-course.dto';
 import { UpdateCourseDto } from './dto/update-course.dto';
 import { ApiBody, ApiConsumes } from '@nestjs/swagger';
-import { courseFileFields, fileStorages } from 'src/common/types/upload_types';
+import { courseFileFields, fileStorages } from 'src/common/utils/file.storage';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { courseApiBody } from 'src/common/types/api.body.types';
 import { Public } from 'src/global/decorators/auth.decorators';

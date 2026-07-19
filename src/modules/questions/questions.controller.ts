@@ -15,7 +15,7 @@ import { UpdateQuestionDto } from './dto/update-question.dto';
 import { ApiBody, ApiConsumes } from '@nestjs/swagger';
 import { QuestionApiBody } from 'src/common/types/api.body.types';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { fileStorages } from 'src/common/types/upload_types';
+import { fileStorages } from 'src/common/utils/file.storage';
 
 @Controller('questions')
 export class QuestionsController {

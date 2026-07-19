@@ -21,6 +21,9 @@ export class AdminService {
       data: {
         role: role,
       },
+      select : {
+        id:true,fullName :true ,role:true,image : true
+      }
     });
   }
 
