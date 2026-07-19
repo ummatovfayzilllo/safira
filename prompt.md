@@ -1,9 +1,28 @@
-# EdFix Frontend Development - Continuation Prompt
+# Safira Frontend Development - Continuation Prompt
 
-**Project:** EdFix Frontend (Next.js 16 + React 19 + TypeScript + Tailwind CSS)  
+**Project:** Safira Frontend (Next.js 16 + React 19 + TypeScript + Tailwind CSS)  
 **Base URL:** `http://localhost:15975/api`  
 **Frontend URL:** `http://localhost:3000`  
 **Language:** Uzbek (O'zbek tilida)
+
+> **Renamed 2026-07-19 (session 2):** the project was called "EdFix"
+> through Lesson Files CRUD; renamed to **Safira** at the user's
+> request. Changed: `package.json`/`package-lock.json` `name` field
+> (`edfix_front_in_next` → `safira_front`), `CLAUDE.md` project name,
+> all user-facing "EdFix" branding (Header logo, landing page, login/
+> register page headings, Sidebar footer), and every "EdFix" mention
+> in `.claude/task_history/*.md`. **Deliberately left unchanged:** the
+> backend repo directory `~/Desktop/edfix_clone` and the Postgres
+> database name `edfix` — those are real infrastructure names, not
+> this project's branding, and renaming references to them would be
+> wrong/misleading. The working directory itself
+> (`edfix_front_in_next/`) was also left as-is — only asked to rename
+> the *project*, not move the folder.
+>
+> **Session paused here at the user's request** — after Lesson Files
+> CRUD + this rename, stop and wait rather than auto-continuing to
+> Lesson Views. Next session: confirm with the user before resuming
+> the CRUD roadmap below.
 
 ---
 
@@ -68,6 +87,15 @@
    - Added "Darslar" entry to Sidebar.tsx under the "Mentor" section, linking to `/dashboard/mentor/lessons`
    - Verified end-to-end against the real local backend (`~/Desktop/edfix_clone`, port 15975) via curl: create-with-video, getall, update, delete all confirmed working with the exact payload shapes the page sends. Video URLs returned by the backend are already absolute (`http://localhost:15975/api/video/...`) and directly usable as `<video src>`.
 
+11. **Lesson Files CRUD** (`app/dashboard/mentor/lesson-files/page.tsx`) ✅ — done + verified 2026-07-19 (session 2, sub-agent)
+   - Create file attachment with required file upload (multipart, `file` field required — backend crashes without it, same pattern as Lessons' `video`)
+   - List files, resolve lesson name via lessons getall, file shown as a download link (filename parsed from the returned URL)
+   - Edit IS supported here (unlike first assumed) — `UpdateLessonFileDto` actually has real optional `note`/`lessonId` fields via `PartialType`, so JSON PATCH `/lesson-files/v4/update-one/:id` works for those two fields. File itself still can't be changed after creation (update controller route has no `FileInterceptor`).
+   - Delete via `/lesson-files/v5/delete-one/:id`
+   - Added "Dars Fayllari" entry to Sidebar.tsx under the "Mentor" section, linking to `/dashboard/mentor/lesson-files`
+   - **Endpoints are oddly versioned per-route** (not a uniform prefix): `POST /lesson-files/v1/create-one`, `GET /lesson-files/v2/get-all` (note: `get-all`, not `getall`), `GET /lesson-files/v3/get-one/:id`, `PATCH /lesson-files/v4/update-one/:id`, `DELETE /lesson-files/v5/delete-one/:id`. Confirmed via `/api-docs-json` and the controller source directly — this is really how it's wired, not a typo.
+   - Verified end-to-end via curl: create-with-file, get-all, update (note-only), delete all confirmed working with the exact payload shapes the page sends. Returned file URLs are absolute (`http://localhost:15975/api/docs/...` for non-media files) and directly usable as an `<a href>`.
+
 ---
 
 ## ⚠️ IMPORTANT — Endpoint verification (learned session 2, 2026-07-19)
@@ -97,34 +125,30 @@ before building on top.
 
 ---
 
-## ⏳ REMAINING TASKS (12 CRUDs + Phase 2/3)
+## ⏳ REMAINING TASKS (11 CRUDs + Phase 2/3)
 
 ### 🔴 PHASE 1 (High Priority - Core Learning Path)
 
 **Next Tasks (In Order):**
-1. **Lesson Files CRUD** (~300 lines) — NEXT
-   - Upload PDF/DOC files
-   - File management
-
-2. **Lesson Views** (~150 lines)
+1. **Lesson Views** (~150 lines) — NEXT
    - Mark lesson as watched
    - Progress tracking
 
-3. **Homeworks CRUD** (~350 lines)
+2. **Homeworks CRUD** (~350 lines)
    - Create homework assignments
    - Student submission view
 
-4. **Homework Submissions CRUD** (~500 lines)
+3. **Homework Submissions CRUD** (~500 lines)
    - Student submissions
    - Mentor grading interface
    - Status tracking (PENDING/APPROVED/REJECTED)
 
-5. **Exams/Questions CRUD** (~450 lines)
+4. **Exams/Questions CRUD** (~450 lines)
    - Multiple choice question creation
    - 4 variants (A, B, C, D)
    - Answer key management
 
-6. **Exam Results CRUD** (~300 lines)
+5. **Exam Results CRUD** (~300 lines)
    - Score calculation
    - Pass/fail determination
    - Certificate trigger
@@ -234,7 +258,7 @@ npm run dev
 ```
 
 ### Step 2: Pick Next Task
-From `REMAINING_CRUDS.md`, the next is **Lesson Files CRUD**.
+From `REMAINING_CRUDS.md`, the next is **Lesson Views**.
 
 ### Step 3: Implementation Template
 Each CRUD follows this pattern:
@@ -296,8 +320,8 @@ npm run lint               # Check TypeScript/ESLint
 1. Read this prompt
 2. Check git log to see last work
 3. **Verify real endpoints first:** `curl -s http://localhost:15975/api-docs-json | python3 -m json.tool` — don't trust `api_info.md`/`API_QUICK_REFERENCE.md` blindly, see the warning section above
-4. Start with **Lesson Files CRUD** (`.claude/task_history/REMAINING_CRUDS.md` - item #1). Endpoints are versioned oddly: `POST /lesson-files/v1/create-one`, `GET /lesson-files/v2/get-all`, `GET /lesson-files/v3/get-one/:id`, `PATCH /lesson-files/v4/update-one/:id`, `DELETE /lesson-files/v5/delete-one/:id` — confirm this against swagger-json before wiring up, it's unusual
-5. Use `app/dashboard/mentor/lessons/page.tsx` as template (multipart file upload pattern, required-on-create-only file field)
+4. Start with **Lesson Views** (`.claude/task_history/REMAINING_CRUDS.md` - item #1) — mark-as-watched + progress tracking, `POST /lesson-views`, `GET /lesson-views`. Simpler than a full CRUD; likely triggered from a lesson player view rather than a standalone admin page. Verify real routes/DTO first as always.
+5. Use `app/dashboard/mentor/lesson-files/page.tsx` or `app/dashboard/mentor/lessons/page.tsx` as templates depending on shape (both have the required-on-create-only file field pattern; lesson-files also shows the case where update DOES work via JSON PATCH for non-file fields)
 6. Test dark mode
 7. Consider delegating the actual page-writing to a sub-agent to save tokens once the endpoint/data-model research is done
 8. Commit

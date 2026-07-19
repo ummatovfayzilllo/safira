@@ -54,7 +54,7 @@ export function Header({ onMenuClick }: HeaderProps) {
             <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
               <span className="text-white font-bold text-sm">EF</span>
             </div>
-            <span className="hidden sm:inline text-xl font-bold text-gray-900">EdFix</span>
+            <span className="hidden sm:inline text-xl font-bold text-gray-900">Safira</span>
           </Link>
         </div>
 

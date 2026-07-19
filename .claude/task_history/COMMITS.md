@@ -1,6 +1,6 @@
 # Git Commits History
 
-**Project:** edfix_front_in_next  
+**Project:** safira_front  
 **Date Range:** 2026-07-19  
 **Author:** Claude Haiku 4.5
 
@@ -108,7 +108,7 @@ app/dashboard/page.tsx   # Created      (Dashboard with 3 tabs)
 ## Branch Information
 
 **Current Branch:** main  
-**Origin:** https://github.com/[username]/edfix_front_in_next  
+**Origin:** https://github.com/[username]/safira_front  
 **Commits Ahead:** 2 (from initial commit)
 
 ---

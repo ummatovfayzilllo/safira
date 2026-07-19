@@ -51,6 +51,7 @@ const menuSections = [
       { icon: '📂', label: 'Kategoriyalar', href: '/dashboard/mentor/categories' },
       { icon: '📚', label: 'Dars Modulları', href: '/dashboard/mentor/lesson-modules' },
       { icon: '🎬', label: 'Darslar', href: '/dashboard/mentor/lessons' },
+      { icon: '📎', label: 'Dars Fayllari', href: '/dashboard/mentor/lesson-files' },
     ],
   },
   {
@@ -122,7 +123,7 @@ export function Sidebar() {
         {isOpen && (
           <div className="p-4 border-t border-gray-200 bg-gray-50">
             <p className="text-xs text-gray-600">
-              EdFix v1.0 • 2026
+              Safira v1.0 • 2026
             </p>
           </div>
         )}

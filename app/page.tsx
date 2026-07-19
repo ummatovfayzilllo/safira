@@ -25,7 +25,7 @@ export default function Home() {
             <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
               <span className="text-white font-bold">EF</span>
             </div>
-            <span className="text-xl font-bold text-gray-900">EdFix</span>
+            <span className="text-xl font-bold text-gray-900">Safira</span>
           </div>
           <div className="flex items-center space-x-4">
             <Link
@@ -52,7 +52,7 @@ export default function Home() {
             <span className="text-blue-600"> Yangi Bosqich</span>
           </h1>
           <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
-            EdFix - o'quv platformasi orqali siz ko'p sonli kurslarni o'rganishingiz
+            Safira - o'quv platformasi orqali siz ko'p sonli kurslarni o'rganishingiz
             mumkin. Duniyaning eng yaxshi mentorlardan o'rganing va o'z karerani
             rivojlantiring.
           </p>
@@ -77,7 +77,7 @@ export default function Home() {
       {/* Features Section */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
         <h2 className="text-4xl font-bold text-center text-gray-900 mb-16">
-          Nima uchun EdFix?
+          Nima uchun Safira?
         </h2>
         <div className="grid md:grid-cols-3 gap-8">
           <div className="bg-white rounded-lg shadow p-8 hover:shadow-lg transition">
@@ -150,7 +150,7 @@ export default function Home() {
       <footer className="bg-gray-900 text-gray-400 py-8 border-t border-gray-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
-            <p>&copy; 2026 EdFix. Barcha huquqlar himoyalangan.</p>
+            <p>&copy; 2026 Safira. Barcha huquqlar himoyalangan.</p>
           </div>
         </div>
       </footer>

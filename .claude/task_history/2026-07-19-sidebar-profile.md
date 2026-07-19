@@ -39,7 +39,7 @@
 **Description:** Top navigation bar with profile dropdown
 
 **Features:**
-- EdFix logo on the left
+- Safira logo on the left
 - Mobile menu toggle button (hamburger)
 - User profile block on the right with:
   - User avatar (initials in gradient circle)

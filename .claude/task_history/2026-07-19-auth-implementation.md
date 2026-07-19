@@ -43,7 +43,7 @@
 - Gradient background styling
 
 **UI:**
-- EdFix header
+- Safira header
 - Email input
 - Password input (masked)
 - Submit button with loading state
@@ -113,7 +113,7 @@
 - Logout button
 
 **Navbar:**
-- EdFix logo
+- Safira logo
 - Tab navigation
 - User menu with logout
 - Responsive design

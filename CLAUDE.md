@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-**edfix_front_in_next** is a Next.js 16 frontend application with React 19, TypeScript, and Tailwind CSS v4.
+**safira_front** is a Next.js 16 frontend application with React 19, TypeScript, and Tailwind CSS v4.
 
 ### Critical: Next.js 16 Breaking Changes
 

@@ -115,7 +115,7 @@ POST /users/create (with image upload)
     - Admin (Users) - NEW
 
 - [x] Header Component (`components/Header.tsx`)
-  - EdFix logo with link
+  - Safira logo with link
   - Mobile menu toggle
   - User profile block
   - Profile dropdown menu:
