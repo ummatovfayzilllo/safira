@@ -27,7 +27,7 @@ export class LessonViewsController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.lessonViewsService.findOne(+id);
+    return this.lessonViewsService.findOne(id);
   }
 
   @Patch(':id')
@@ -35,11 +35,11 @@ export class LessonViewsController {
     @Param('id') id: string,
     @Body() updateLessonViewDto: UpdateLessonViewDto,
   ) {
-    return this.lessonViewsService.update(+id, updateLessonViewDto);
+    return this.lessonViewsService.update(id, updateLessonViewDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.lessonViewsService.remove(+id);
+    return this.lessonViewsService.remove(id);
   }
 }

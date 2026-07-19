@@ -27,7 +27,7 @@ export class LastActivityController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.lastActivityService.findOne(+id);
+    return this.lastActivityService.findOne(id);
   }
 
   @Patch(':id')
@@ -35,11 +35,11 @@ export class LastActivityController {
     @Param('id') id: string,
     @Body() updateLastActivityDto: UpdateLastActivityDto,
   ) {
-    return this.lastActivityService.update(+id, updateLastActivityDto);
+    return this.lastActivityService.update(id, updateLastActivityDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.lastActivityService.remove(+id);
+    return this.lastActivityService.remove(id);
   }
 }

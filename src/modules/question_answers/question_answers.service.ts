@@ -1,33 +1,115 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateQuestionAnswerDto } from './dto/create-question_answer.dto';
 import { UpdateQuestionAnswerDto } from './dto/update-question_answer.dto';
+import { PrismaService } from 'src/core/prisma/prisma.service';
+import {
+  checkExistsResurs,
+} from 'src/common/utils/check.functions';
+import { ModelsEnumInPrisma } from 'src/common/types/global.types';
 
 @Injectable()
 export class QuestionAnswersService {
-  create(createQuestionAnswerDto: CreateQuestionAnswerDto) {
-    return 'This action adds a new questionAnswer';
+  constructor(private readonly prisma: PrismaService) {}
+
+  async create(createQuestionAnswerDto: CreateQuestionAnswerDto) {
+    await checkExistsResurs(
+      this.prisma,
+      ModelsEnumInPrisma.USERS,
+      'id',
+      createQuestionAnswerDto.userId,
+    );
+    await checkExistsResurs(
+      this.prisma,
+      ModelsEnumInPrisma.QUESTIONS,
+      'id',
+      createQuestionAnswerDto.questionId,
+    );
+
+    const result = await this.prisma.questionAnswer.create({
+      data: createQuestionAnswerDto,
+      include: {
+        user: { select: { id: true, fullName: true, email: true } },
+        question: { select: { id: true, text: true } },
+      },
+    });
+
+    return {
+      message: 'This action adds a new questionAnswer',
+      data: result,
+    };
   }
 
-  findAll() {
-    return `This action returns all questionAnswers`;
+  async findAll() {
+    const result = await this.prisma.questionAnswer.findMany({
+      include: {
+        user: { select: { id: true, fullName: true, email: true } },
+        question: { select: { id: true, text: true } },
+      },
+    });
+
+    return {
+      message: `This action returns all questionAnswers`,
+      data: result,
+    };
   }
 
-  findOne(id: string) {
-    return `This action returns a #${id} questionAnswer`;
+  async findOne(id: string) {
+    const result = await this.prisma.questionAnswer.findFirst({
+      where: { id },
+      include: {
+        user: { select: { id: true, fullName: true, email: true } },
+        question: { select: { id: true, text: true } },
+      },
+    });
+
+    if (!result) {
+      throw new NotFoundException(`QuestionAnswer topilmadi (id: ${id})`);
+    }
+
+    return {
+      message: `This action returns a #${id} questionAnswer`,
+      data: result,
+    };
   }
 
-  update(id: string, updateQuestionAnswerDto: UpdateQuestionAnswerDto) {
-    return `This action updates a #${id} questionAnswer`;
+  async update(id: string, updateQuestionAnswerDto: UpdateQuestionAnswerDto) {
+    await checkExistsResurs(
+      this.prisma,
+      ModelsEnumInPrisma.QUESTION_ANSWERS,
+      'id',
+      id,
+    );
+
+    const result = await this.prisma.questionAnswer.update({
+      where: { id },
+      data: updateQuestionAnswerDto,
+      include: {
+        user: { select: { id: true, fullName: true, email: true } },
+        question: { select: { id: true, text: true } },
+      },
+    });
+
+    return {
+      message: `This action updates a #${id} questionAnswer`,
+      data: result,
+    };
   }
 
-  remove(id: string) {
-    return `This action removes a #${id} questionAnswer`;
+  async remove(id: string) {
+    await checkExistsResurs(
+      this.prisma,
+      ModelsEnumInPrisma.QUESTION_ANSWERS,
+      'id',
+      id,
+    );
+
+    const result = await this.prisma.questionAnswer.delete({
+      where: { id },
+    });
+
+    return {
+      message: `This action removes a #${id} questionAnswer`,
+      data: result,
+    };
   }
 }
-
-/*
-{
-  "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Ijc1ZTMxNmFkLTU4Y2QtNDhjNy04Yzg5LTEzYzAxYjY3Y2RiMiIsInJvbGUiOiJTVFVERU5UIiwiaWF0IjoxNzUzNzA4Nzk1LCJleHAiOjE3NTM3OTUxOTV9.kZiCUNSyA_QZAzTTnTNds1ZFzlYm23eQKbCu8iyIboo",
-  "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Ijc1ZTMxNmFkLTU4Y2QtNDhjNy04Yzg5LTEzYzAxYjY3Y2RiMiIsInJvbGUiOiJTVFVERU5UIiwiaWF0IjoxNzUzNzA4Nzk1LCJleHAiOjE3NTQzMTM1OTV9.fygjDzWv-0mC61EMbc-cvskTTGkZar3GQMyVV3XnJIg"
-}
-*/

@@ -1,5 +1,6 @@
 export enum ModelsEnum {
   ASSIGNED_COURSES = 'assigned_courses',
+  CONTACT = 'contact',
   COURSE_CATEGORIES = 'course_categories',
   COURSES = 'courses',
   EXAM_RESULTS = 'exam_results',
@@ -23,6 +24,7 @@ import { PrismaClient } from '@prisma/client';
 
 export enum ModelsEnumInPrisma {
   ASSIGNED_COURSES = 'assignedCourse',
+  CONTACT = 'contact',
   COURSE_CATEGORIES = 'courseCategory',
   COURSES = 'course',
   EXAM_RESULTS = 'examResult',
@@ -45,6 +47,7 @@ export enum ModelsEnumInPrisma {
 
 export const prismaModelMap: Record<ModelsEnumInPrisma, keyof PrismaClient> = {
   [ModelsEnumInPrisma.ASSIGNED_COURSES]: 'assignedCourse',
+  [ModelsEnumInPrisma.CONTACT]: 'contact',
   [ModelsEnumInPrisma.COURSE_CATEGORIES]: 'courseCategory',
   [ModelsEnumInPrisma.COURSES]: 'course',
   [ModelsEnumInPrisma.EXAM_RESULTS]: 'examResult',
