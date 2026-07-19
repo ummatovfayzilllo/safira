@@ -24,6 +24,14 @@
 - [x] Profile Dropdown Menu (with logout)
 - [x] API-based Menu Structure
 
+### Profile CRUD
+- [x] Profile Edit Page (name, image update)
+- [x] Password Reset (current + new + confirm)
+- [x] Delete Account Page (with warnings)
+- [x] Image Upload & Preview
+- [x] Form Validation & Error Handling
+- [x] Navigation Links Updated (Header + Sidebar)
+
 ### Pages
 | Page | Route | Status | Notes |
 |------|-------|--------|-------|
@@ -43,6 +51,8 @@
 | Questions | `/dashboard/questions` | ✅ | Q&A with mentors |
 | Mentors | `/dashboard/mentors` | ✅ | Mentor profiles |
 | Contact | `/dashboard/contact` | ✅ | Contact form |
+| Profile | `/dashboard/profile` | ✅ | Edit name, image, password |
+| Delete Account | `/dashboard/profile/delete` | ✅ | Permanent account deletion |
 
 ---
 
@@ -86,11 +96,11 @@
 
 ## 📊 Stats
 
-- **Total Pages:** 16 pages
+- **Total Pages:** 18 pages
 - **Components:** 3 (Header, Sidebar, DashboardLayout)
-- **Total Commits:** 4
-- **Lines Added:** 1,892+
-- **Features:** Auth flow, Sidebar nav, Profile setup, Layout system
+- **Total Commits:** 7
+- **Lines Added:** 2,498+
+- **Features:** Auth flow, Sidebar nav, Profile setup, Profile CRUD, Layout system
 - **Tests:** Manual (browser)
 - **Linter:** ESLint configured (`npm run lint`)
 
