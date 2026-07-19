@@ -1,4 +1,4 @@
-# 🎓 Imtihon - Educational Platform Backend
+# 🎓 Safira - Educational Platform Backend
 
 ![NestJS](https://img.shields.io/badge/NestJS-11.0.1-red?style=flat-square)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.7.3-blue?style=flat-square)
