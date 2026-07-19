@@ -52,7 +52,7 @@ export default function RegisterPage() {
 
     try {
       await verify({ email, code: parseInt(code) });
-      router.push('/dashboard');
+      router.push('/profile-setup');
     } catch (err: any) {
       setLocalError(err.response?.data?.message || 'Tasdiq xatosi');
     }
