@@ -18,7 +18,6 @@ import { UpdatePermissionDto } from './dto/update-permission';
 import { JwtPayload } from 'src/common/types/jwt.types';
 
 @Controller('admin')
-@Public()
 export class AdminController {
   constructor(
     private readonly adminService: AdminService,

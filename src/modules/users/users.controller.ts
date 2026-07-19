@@ -63,10 +63,8 @@ export class UsersController {
     return this.usersService.updateImage(id, image.filename);
   }
 
-  @Public()
   @Get('get-all')
-  findAll(@UserData() user: JwtPayload) {
-    console.log(user);
+  findAll() {
     return this.usersService.findAll();
   }
 

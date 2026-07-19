@@ -148,6 +148,21 @@ src/
 
 ## 🔌 API ENDPOINTS
 
+### 📌 Public vs Private Endpoints
+
+**🔓 Public Endpoints** (Autentifikatsiya keraksiz):
+- Auth: register, login, verify, refresh-token, logout, reset-password
+- Courses: GET /courses/getall, GET /courses/get-one/:id
+- Categories: GET /course-categories/get-all, GET /course-categories/get-one/:id
+- Mentor Profiles: GET /mentor-profiles/getall, GET /mentor-profiles/get-one/:id
+- Users: POST /users/create (registration)
+- File Streaming: /video/:file, /image/:file, /docs/:file, /archive/:file
+
+**🔐 Private Endpoints** (JWT Token kerak):
+- Barcha boshqa endpoints (CRUD operations, admin, lessons, homeworks, exams, va h.k.)
+
+---
+
 ### 🔐 Authentication Endpoints
 
 Base URL: `/api/auth`
@@ -431,6 +446,50 @@ Authorization: Bearer <access_token>
 
 ---
 
+#### 5. **Get My Profile (Mening Profilim)**
+
+```http
+GET /api/users/get-my
+Authorization: Bearer <access_token>
+```
+
+**Response (200):**
+```json
+{
+  "message": "This action returns a [ user-uuid ] user",
+  "data": {
+    "id": "user-uuid",
+    "fullName": "Fayzillo Ummatov",
+    "email": "fayzillo@example.com",
+    "image": "https://res.cloudinary.com/...",
+    "role": "STUDENT",
+    "createdAt": "2026-07-19T10:30:00Z",
+    "updatedAt": "2026-07-19T10:30:00Z",
+    "mentorProfile": {
+      "id": "profile-uuid",
+      "about": "I am a mentor",
+      "job": "Software Developer",
+      "experience": 5,
+      "telegram": "https://t.me/username",
+      "instagram": "https://instagram.com/username",
+      "linkedin": "https://linkedin.com/in/username",
+      "facebook": "https://facebook.com/username",
+      "github": "https://github.com/username",
+      "website": "https://example.com",
+      "createdAt": "2026-07-19T11:00:00Z",
+      "updatedAt": "2026-07-19T11:00:00Z"
+    }
+  }
+}
+```
+
+**Tavsif:**
+- Hozirgi foydalanuvchining profilini qaytaradi (JWT required)
+- Agar mentor profili mavjud bo'lsa, to'liq mentor ma'lumotlarini ham qaytaradi
+- Filterlashsiz to'liq ma'lumot olasiz
+
+---
+
 #### 6. **Update User Image (Rasm Yangilash)**
 
 ```http
@@ -488,6 +547,268 @@ Authorization: Bearer <access_token>
 **Tavsif:**
 - Foydalanuvchini database dan o'chirib tashlaydi
 - Bog'langan hujjatlarning o'chish siyosati database trigger bilan boshqariladi
+
+---
+
+### 🛡️ Admin Endpoints
+
+Base URL: `/api/admin`
+
+**⚠️ Barcha admin endpoints JWT token talab qiladi**
+
+#### 1. **Create New User (Yangi Foydalanuvchi Yaratish)**
+
+```http
+POST /api/admin/new-user
+Authorization: Bearer <access_token>
+Content-Type: application/json
+
+{
+  "fullName": "John Doe",
+  "email": "john@example.com",
+  "password": "password123",
+  "role": "ADMIN|MENTOR|ASSISTANT|STUDENT",
+  "image": "https://example.com/image.jpg"
+}
+```
+
+**Response (201):**
+```json
+{
+  "message": "Yangi foydalanuvchi muvaffaqiyatli yaratildi",
+  "data": {
+    "id": "user-uuid",
+    "fullName": "John Doe",
+    "email": "john@example.com",
+    "role": "ADMIN",
+    "image": null,
+    "createdAt": "2026-07-19T13:14:56.769Z"
+  }
+}
+```
+
+**Tavsif:**
+- Admin paneldan to'liq ma'lumotlar bilan yangi user yaratish
+- Roli tanlash mumkin (default: STUDENT)
+- Parol avtomatik bcrypt bilan hash qilinadi
+
+---
+
+#### 2. **Assign Role (Foydalanuvchiga Rol Tayinlash)**
+
+```http
+POST /api/admin/assign-role
+Authorization: Bearer <access_token>
+Content-Type: application/json
+
+{
+  "userId": "user-uuid",
+  "role": "ADMIN|MENTOR|ASSISTANT|STUDENT"
+}
+```
+
+---
+
+#### 3. **Get All Permissions (Barcha Ruxsatlarni Olish)**
+
+```http
+GET /api/admin/getall-permission
+Authorization: Bearer <access_token>
+```
+
+**Response (200):**
+```json
+[
+  {
+    "id": "permission-uuid",
+    "userId": "user-uuid",
+    "model": "course",
+    "actions": ["GET", "POST", "PATCH"],
+    "createdAt": "2026-07-19T10:30:00Z",
+    "updatedAt": "2026-07-19T10:30:00Z"
+  }
+]
+```
+
+**Tavsif:**
+- Barcha ruxsatlarni qaytaradi
+- Authenticated user bo'lsa, o'z ruxsatlari olib tashlanadi
+- Public endpoints (authentication yo'q) bo'lsa barcha ruxsatlarni ko'radi
+
+---
+
+#### 4. **Get One Permission (Bir Ruxsatni Olish)**
+
+```http
+GET /api/admin/get-one-permission/:permissionId
+Authorization: Bearer <access_token>
+```
+
+---
+
+#### 5. **Create Permission (Ruxsat Yaratish)**
+
+```http
+POST /api/admin/create-permission
+Authorization: Bearer <access_token>
+Content-Type: application/json
+
+{
+  "userId": "user-uuid",
+  "model": "course|user|lesson|homework|exam",
+  "actions": ["GET", "POST", "PUT", "PATCH", "DELETE"]
+}
+```
+
+---
+
+#### 6. **Update Permission (Ruxsatni Yangilash)**
+
+```http
+PUT /api/admin/update-permission/:permissionId
+Authorization: Bearer <access_token>
+Content-Type: application/json
+
+{
+  "model": "course",
+  "actions": ["GET", "POST", "DELETE"]
+}
+```
+
+---
+
+#### 7. **Get All Staff (Barcha Xodimlarni Olish)**
+
+```http
+GET /api/admin/getall-staff
+Authorization: Bearer <access_token>
+```
+
+---
+
+#### 8. **Get One Staff (Bir Xodimni Olish)**
+
+```http
+GET /api/admin/getOne-staff/:staffId
+Authorization: Bearer <access_token>
+```
+
+---
+
+#### 9. **Delete Staff (Xodimni O'chirish)**
+
+```http
+DELETE /api/admin/delete-staff/:staffId
+Authorization: Bearer <access_token>
+```
+
+---
+
+#### 10. **Delete Permission (Ruxsatni O'chirish)**
+
+```http
+DELETE /api/admin/delete-permission/:permissionId
+Authorization: Bearer <access_token>
+```
+
+---
+
+### 👨‍🏫 Mentor Profiles Endpoints
+
+Base URL: `/api/mentor-profiles`
+
+#### 1. **Get All Mentor Profiles (Barcha Mentor Profillarini Olish)**
+
+```http
+GET /api/mentor-profiles/getall
+Authorization: Bearer <access_token> (Optional - permission ni o'z-o'zini o'chirish uchun)
+```
+
+**Response (200):**
+```json
+{
+  "message": "This action returns all mentorProfiles",
+  "data": [
+    {
+      "id": "profile-uuid",
+      "about": "I am a mentor",
+      "job": "Software Developer",
+      "experience": 5,
+      "telegram": "https://t.me/mentor",
+      "instagram": "https://instagram.com/mentor",
+      "linkedin": "https://linkedin.com/in/mentor",
+      "facebook": null,
+      "github": "https://github.com/mentor",
+      "website": "https://example.com",
+      "userId": "user-uuid",
+      "user": {
+        "id": "user-uuid",
+        "fullName": "Mentor Name",
+        "email": "mentor@example.com",
+        "image": "https://...",
+        "role": "MENTOR"
+      },
+      "createdAt": "2026-07-19T10:30:00Z",
+      "updatedAt": "2026-07-19T10:30:00Z"
+    }
+  ]
+}
+```
+
+**Tavsif:**
+- Barcha mentor profillarini qaytaradi
+- Public endpoint - hech kim ko'rishi mumkin
+- Agar authenticated bo'lsa, o'z profilingiz olib tashlanadi (filterlashiladi)
+
+---
+
+#### 2. **Get Mentor Profile by ID**
+
+```http
+GET /api/mentor-profiles/get-one/:id
+```
+
+---
+
+#### 3. **Create Mentor Profile (Yangi Mentor Profili)**
+
+```http
+POST /api/mentor-profiles/create
+Authorization: Bearer <access_token>
+Content-Type: application/json
+
+{
+  "userId": "user-uuid",
+  "about": "I am a mentor with 5 years experience",
+  "job": "Senior Developer",
+  "experience": 5,
+  "telegram": "https://t.me/username",
+  "instagram": "https://instagram.com/username",
+  "linkedin": "https://linkedin.com/in/username",
+  "facebook": "https://facebook.com/username",
+  "github": "https://github.com/username",
+  "website": "https://example.com"
+}
+```
+
+---
+
+#### 4. **Update Mentor Profile**
+
+```http
+PATCH /api/mentor-profiles/update-one/:id
+Authorization: Bearer <access_token>
+Content-Type: application/json
+```
+
+---
+
+#### 5. **Delete Mentor Profile**
+
+```http
+DELETE /api/mentor-profiles/delete-one/:id
+Authorization: Bearer <access_token>
+```
 
 ---
 
