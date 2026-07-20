@@ -38,9 +38,7 @@ export class HomeworkSubmissionsService {
         },
       });
     if (files) {
-      data['files'] = files.map(async (file) => {
-        return urlGenerator(this.config, file.filename);
-      });
+      data['files'] = files.map((file) => file.filename);
     }
     if (oldHomeworkSubmission) {
       try {
@@ -70,9 +68,15 @@ export class HomeworkSubmissionsService {
 
   async findAll() {
     try {
+      const submissions = await this.prisma.homeworkSubmission.findMany();
       return {
         message: `This action returns all homeworkSubmissions`,
-        data: await this.prisma.homeworkSubmission.findMany(),
+        data: submissions.map((submission) => ({
+          ...submission,
+          files: (submission.files || []).map((file) =>
+            urlGenerator(this.config, file),
+          ),
+        })),
       };
     } catch (error) {
       console.log(error.message);
@@ -81,14 +85,20 @@ export class HomeworkSubmissionsService {
   }
 
   async findOne(id: string) {
+    const submission = await checkExistsResurs<HomeworkSubmission>(
+      this.prisma,
+      ModelsEnumInPrisma.HOMEWORK_SUBMISSIONS,
+      'id',
+      id,
+    );
     return {
       message: `This action returns a #${id} homeworkSubmission`,
-      data: await checkExistsResurs(
-        this.prisma,
-        ModelsEnumInPrisma.HOMEWORK_SUBMISSIONS,
-        'id',
-        id,
-      ),
+      data: {
+        ...submission,
+        files: (submission.files || []).map((file) =>
+          urlGenerator(this.config, file),
+        ),
+      },
     };
   }
 
@@ -119,19 +129,16 @@ export class HomeworkSubmissionsService {
     );
     try {
       if (files) {
-        data['files'] = files.map(async (file) => {
-          return urlGenerator(this.config, file.filename);
-        });
+        data['files'] = files.map((file) => file.filename);
       }
       const updatedData = await this.prisma.homeworkSubmission.update({
         where: { id: id },
         data: data,
       });
       if (oldHomeworkSubmission.files) {
-        oldHomeworkSubmission.files.map(async (file) => {
-          const fileName = file.split('/').at(-1);
+        oldHomeworkSubmission.files.forEach((file) => {
           try {
-            unlinkFile(fileName || '');
+            unlinkFile(file);
           } catch (error) {
             console.log(error.message);
           }
@@ -160,10 +167,9 @@ export class HomeworkSubmissionsService {
         where: { id: id },
       });
       if (oldHomeworkSubmission.files) {
-        oldHomeworkSubmission.files.map(async (file) => {
-          const fileName = file.split('/').at(-1);
+        oldHomeworkSubmission.files.forEach((file) => {
           try {
-            unlinkFile(fileName || '');
+            unlinkFile(file);
           } catch (error) {
             console.log(error.message);
           }

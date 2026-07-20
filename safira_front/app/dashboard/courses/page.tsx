@@ -66,7 +66,7 @@ export default function CoursesPage() {
                   <p className="text-sm text-gray-600 mb-3 line-clamp-2">{course.about}</p>
                   <div className="flex justify-between items-center mb-4">
                     <span className="text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded">{course.level}</span>
-                    <span className="font-bold text-gray-900">{course.price.toLocaleString()} so'm</span>
+                    <span className="font-bold text-gray-900">{course.price} so'm</span>
                   </div>
                   <button className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg font-medium text-sm transition">
                     Ro'yxatdan o'tish

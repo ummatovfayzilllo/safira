@@ -66,7 +66,7 @@ export class MulterValidationExceptionFilter implements ExceptionFilter {
         });
       }
       if (file && file['video'] && file['video'].path) {
-        fs.unlink(file['video'], (err) => {
+        fs.unlink(file['video'].path, (err) => {
           if (err) {
             console.log(err);
           }

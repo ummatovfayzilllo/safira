@@ -1,0 +1,45 @@
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: safira
+      POSTGRES_PASSWORD: safira
+      POSTGRES_DB: safira
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U safira -d safira"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    # No host port mapping — backend reaches this over the internal compose
+    # network as `db:5432`. Uncomment below if you need psql from the host,
+    # picking a free host port (5432 is commonly already taken by a local PG).
+    # ports:
+    #   - "5433:5432"
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    # Loads JWT/email/etc secrets from .env; DATABASE_URL and PORT below
+    # intentionally override whatever is in .env so the container always
+    # talks to the `db` service, not the value used for local `npm run start:dev`.
+    env_file:
+      - .env
+    environment:
+      DATABASE_URL: postgresql://safira:safira@db:5432/safira
+      PORT: 15975
+    ports:
+      - "15975:15975"
+    volumes:
+      - uploads:/app/core/uploads
+
+volumes:
+  pgdata:
+  uploads:

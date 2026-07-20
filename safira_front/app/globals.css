@@ -11,7 +11,9 @@
 html.dark {
   color-scheme: dark;
 }
-
+input.light {
+  color:  black;
+}
 html.light {
   color-scheme: light;
 }

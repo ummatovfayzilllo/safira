@@ -17,6 +17,15 @@ export class LessonsService {
     private readonly config: ConfigService,
   ) {}
 
+  private withVideoUrl<T extends { video?: string | null }>(record: T): T {
+    return {
+      ...record,
+      video: record.video
+        ? urlGenerator(this.config, record.video)
+        : record.video,
+    };
+  }
+
   async create(data: CreateLessonDto, video?: string) {
     await checAlreadykExistsResurs(
       this.prisma,
@@ -32,12 +41,13 @@ export class LessonsService {
     );
     try {
       if (video) {
-        data['video'] = urlGenerator(this.config, video);
+        data['video'] = video;
       }
 
+      const created = await this.prisma.lesson.create({ data });
       return {
         message: 'This action adds a new lesson',
-        data: await this.prisma.lesson.create({ data }),
+        data: this.withVideoUrl(created),
       };
     } catch (error) {
       console.log(error);
@@ -47,9 +57,10 @@ export class LessonsService {
 
   async findAll() {
     try {
+      const lessons = await this.prisma.lesson.findMany();
       return {
         message: `This action returns all lessons`,
-        data: await this.prisma.lesson.findMany(),
+        data: lessons.map((lesson) => this.withVideoUrl(lesson)),
       };
     } catch (error) {
       console.log(error);
@@ -58,14 +69,15 @@ export class LessonsService {
   }
 
   async findOne(id: string) {
+    const lesson = await checkExistsResurs<{ video?: string | null }>(
+      this.prisma,
+      ModelsEnumInPrisma.LESSONS,
+      'id',
+      id,
+    );
     return {
       message: `This action returns a #${id} lesson`,
-      data: await checkExistsResurs(
-        this.prisma,
-        ModelsEnumInPrisma.LESSONS,
-        'id',
-        id,
-      ),
+      data: this.withVideoUrl(lesson),
     };
   }
 

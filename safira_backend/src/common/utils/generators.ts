@@ -13,7 +13,14 @@ import { Response } from 'express';
 import { statfs, stat } from 'fs/promises';
 
 export function urlGenerator(config: ConfigService, param: string) {
-  const extract = extname(param);
+  // Legacy DB rows (written before the bare-filename fix) may still hold a
+  // full URL instead of a filename. Re-derive the bare filename from it so
+  // we never double-wrap ("http://host/api/image/http://host/api/image/x.png")
+  // and so the URL is rebuilt against the *current* host, not a stale one.
+  const fileName = /^https?:\/\//i.test(param)
+    ? param.split('/').at(-1) || param
+    : param;
+  const extract = extname(fileName);
   const serverRot = imageExtensions.includes(extract)
     ? 'image'
     : videoExtensions.includes(extract)
@@ -25,7 +32,7 @@ export function urlGenerator(config: ConfigService, param: string) {
   const port = config.get<string>('PORT');
   const baseUrl =
     config.get<string>('APP_BASE_URL') || `htpp://${host}:${port}`;
-  const result = `${baseUrl}/api/${serverRot}/${param}`;
+  const result = `${baseUrl}/api/${serverRot}/${fileName}`;
   return result;
 }
 

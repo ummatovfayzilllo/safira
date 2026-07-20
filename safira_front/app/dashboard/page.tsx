@@ -102,7 +102,7 @@ export default function DashboardPage() {
                       {course.level}
                     </span>
                     <span className="font-bold text-gray-900">
-                      {course.price.toLocaleString()} so'm
+                      {course.price} so'm
                     </span>
                   </div>
                   <button className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg font-medium text-sm transition">

@@ -22,9 +22,7 @@ export class HomeworksService {
       'id',
       data.lessonId,
     );
-    data['files'] = files.map((file) => {
-      return urlGenerator(this.config, file.filename);
-    });
+    data['files'] = files.map((file) => file.filename);
     try {
       return {
         message: 'This action adds a new homework',
@@ -40,9 +38,15 @@ export class HomeworksService {
 
   async findAll() {
     try {
+      const homeworks = await this.prisma.homework.findMany();
       return {
         message: `This action returns all homeworks`,
-        data: await this.prisma.homework.findMany(),
+        data: homeworks.map((homework) => ({
+          ...homework,
+          files: (homework.files || []).map((file) =>
+            urlGenerator(this.config, file),
+          ),
+        })),
       };
     } catch (error) {
       console.log(error.message);
@@ -51,14 +55,20 @@ export class HomeworksService {
   }
 
   async findOne(id: string) {
+    const homework = await checkExistsResurs<Homework>(
+      this.prisma,
+      ModelsEnumInPrisma.HOMEWORKS,
+      'id',
+      id,
+    );
     return {
       message: `This action returns a #${id} homework`,
-      data: await checkExistsResurs(
-        this.prisma,
-        ModelsEnumInPrisma.HOMEWORKS,
-        'id',
-        id,
-      ),
+      data: {
+        ...homework,
+        files: (homework.files || []).map((file) =>
+          urlGenerator(this.config, file),
+        ),
+      },
     };
   }
 
@@ -76,10 +86,9 @@ export class HomeworksService {
     try {
       try {
         if (oldHomework.files) {
-          oldHomework.files.map(async (file) => {
+          oldHomework.files.forEach((file) => {
             if (file && typeof file === 'string') {
-              const fileName = file.split('/').at(-1);
-              unlinkFile(fileName || '');
+              unlinkFile(file);
             }
           });
         }
@@ -87,9 +96,7 @@ export class HomeworksService {
         console.log(error);
       }
       if (files) {
-        data['files'] = files.map(async (file) => {
-          return urlGenerator(this.config, file.filename);
-        });
+        data['files'] = files.map((file) => file.filename);
       }
       return {
         message: `This action updates a #${id} homework`,
@@ -117,10 +124,9 @@ export class HomeworksService {
       });
       try {
         if (oldHomework.files) {
-          oldHomework.files.map(async (file) => {
+          oldHomework.files.forEach((file) => {
             if (file && typeof file === 'string') {
-              const fileName = file.split('/').at(-1);
-              unlinkFile(fileName || '');
+              unlinkFile(file);
             }
           });
         }

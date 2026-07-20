@@ -68,11 +68,13 @@ export class LessonModulesService {
         );
       return {
         message: `This action updates a #${id} lessonModule`,
-        data: await this.prisma.assignedCourse.update({
+        data: await this.prisma.lesson_module.update({
           where: {
             id: id,
           },
-          data: data,
+          data: {
+            name : data.name
+          },
         }),
       };
     } catch (error) {

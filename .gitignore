@@ -1,0 +1,51 @@
+# Upload storage (sibling to safira_backend/, see BACKEND.MD)
+# Content must persist on disk / in the Docker volume, not in git history
+/core/uploads/
+
+# NOTE: safira_backend/ va safira_front/ o'zining .gitignore fayliga ega
+# (kelajakda alohida repolarga ajratish mumkin bo'lishi uchun ular saqlanadi).
+# Quyidagilar sub-repo tuzilishi subtree merge orqali birlashtirilganidan keyin
+# root darajasida ham ehtiyot chorasi sifatida takrorlangan.
+
+# dependencies
+node_modules/
+safira_backend/node_modules/
+safira_front/node_modules/
+
+# env files
+.env
+.env.*
+safira_backend/.env
+safira_backend/.env.*
+safira_front/.env
+safira_front/.env.*
+
+# build output
+safira_backend/dist/
+safira_backend/build/
+safira_front/.next/
+safira_front/out/
+safira_front/build/
+
+# logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# OS / editor
+.DS_Store
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.idea/
+
+# accidental per-module .vscode folder (not shared project config)
+safira_backend/src/modules/lesson_modules/.vscode/
+
+# coverage
+coverage/
+.nyc_output/

@@ -14,6 +14,13 @@ export class LessonFilesService {
     private config: ConfigService,
   ) {}
 
+  private withFileUrl<T extends { file?: string | null }>(record: T): T {
+    return {
+      ...record,
+      file: record.file ? urlGenerator(this.config, record.file) : record.file,
+    };
+  }
+
   async create(data: CreateLessonFileDto, fileName?: string) {
     await checkExistsResurs(
       this.prisma,
@@ -23,11 +30,14 @@ export class LessonFilesService {
     );
     try {
       if (fileName) {
-        data['file'] = urlGenerator(this.config, fileName);
+        data['file'] = fileName;
       }
+      const created = await this.prisma.lessonFile.create({
+        data: { ...data },
+      });
       return {
         message: 'This action adds a new lessonFile',
-        data: await this.prisma.lessonFile.create({ data: { ...data } }),
+        data: this.withFileUrl(created),
       };
     } catch (error) {
       console.log(error);
@@ -37,9 +47,10 @@ export class LessonFilesService {
 
   async findAll() {
     try {
+      const lessonFiles = await this.prisma.lessonFile.findMany();
       return {
         message: `This action returns all lessonFiles`,
-        data: await this.prisma.lessonFile.findMany(),
+        data: lessonFiles.map((file) => this.withFileUrl(file)),
       };
     } catch (error) {
       console.log(error);
@@ -48,14 +59,15 @@ export class LessonFilesService {
   }
 
   async findOne(id: string) {
+    const lessonFile = await checkExistsResurs<{ file?: string | null }>(
+      this.prisma,
+      ModelsEnumInPrisma.LESSON_FILES,
+      'id',
+      id,
+    );
     return {
       message: `This action returns a #${id} lessonFile`,
-      data: await checkExistsResurs(
-        this.prisma,
-        ModelsEnumInPrisma.LESSON_FILES,
-        'id',
-        id,
-      ),
+      data: this.withFileUrl(lessonFile),
     };
   }
 
@@ -68,14 +80,15 @@ export class LessonFilesService {
     );
     try {
       if (fileName) {
-        data['file'] = urlGenerator(this.config, fileName);
+        data['file'] = fileName;
       }
+      const updated = await this.prisma.lessonFile.update({
+        where: { id: id },
+        data: { ...data },
+      });
       return {
         message: `This action updates a #${id} lessonFile`,
-        data: await this.prisma.lessonFile.update({
-          where: { id: id },
-          data: { ...data },
-        }),
+        data: this.withFileUrl(updated),
       };
     } catch (error) {
       console.log(error);

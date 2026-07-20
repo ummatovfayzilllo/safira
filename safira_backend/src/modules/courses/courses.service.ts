@@ -38,10 +38,10 @@ export class CoursesService {
       data.categoryId,
     );
     if (introVideo) {
-      data['introVideo'] = urlGenerator(this.config, introVideo);
+      data['introVideo'] = introVideo;
     }
     if (banner) {
-      data['banner'] = urlGenerator(this.config, banner);
+      data['banner'] = banner;
     }
     let result = {};
     try {
@@ -63,9 +63,18 @@ export class CoursesService {
           category: true,
         },
       });
+      const data = courses.map((course) => ({
+        ...course,
+        banner: course.banner
+          ? urlGenerator(this.config, course.banner)
+          : course.banner,
+        introVideo: course.introVideo
+          ? urlGenerator(this.config, course.introVideo)
+          : course.introVideo,
+      }));
       return {
         message: `This action returns all courses`,
-        data: courses,
+        data,
       };
     } catch (error) {
       console.log(error);
@@ -74,7 +83,7 @@ export class CoursesService {
   }
 
   async findOne(id: number) {
-    const result = await checkExistsResurs(
+    const result = await checkExistsResurs<Course>(
       this.prisma,
       ModelsEnumInPrisma.COURSES,
       'id',
@@ -82,7 +91,15 @@ export class CoursesService {
     );
     return {
       message: `This action returns a #${id} course`,
-      data: result,
+      data: {
+        ...result,
+        banner: result.banner
+          ? urlGenerator(this.config, result.banner)
+          : result.banner,
+        introVideo: result.introVideo
+          ? urlGenerator(this.config, result.introVideo)
+          : result.introVideo,
+      },
     };
   }
 
@@ -98,26 +115,18 @@ export class CoursesService {
       'id',
       id,
     );
-    const bannerUrl = course.banner;
-    const introVideoUrl = course.introVideo;
     try {
       if (banner) {
-        if (bannerUrl && typeof bannerUrl === 'string') {
-          const fileName = bannerUrl.split('/').at(-1);
-          if (typeof fileName === 'string') {
-            unlinkFile(fileName);
-          }
+        if (course.banner) {
+          unlinkFile(course.banner);
         }
-        data['banner'] = urlGenerator(this.config, banner);
+        data['banner'] = banner;
       }
       if (introVideo) {
-        if (introVideoUrl && typeof introVideoUrl === 'string') {
-          const fileName = introVideoUrl.split('/').at(-1);
-          if (typeof fileName === 'string') {
-            unlinkFile(fileName);
-          }
-          data['introVideo'] = urlGenerator(this.config, 'intro');
+        if (course.introVideo) {
+          unlinkFile(course.introVideo);
         }
+        data['introVideo'] = introVideo;
       }
       return {
         message: `This action updates a #${id} course`,
@@ -139,19 +148,11 @@ export class CoursesService {
       'id',
       id,
     );
-    const banner = course.banner;
-    const introVideo = course.introVideo;
-    if (banner && typeof banner === 'string') {
-      const fileName = banner.split('/').at(-1);
-      if (typeof fileName === 'string') {
-        unlinkFile(fileName);
-      }
+    if (course.banner) {
+      unlinkFile(course.banner);
     }
-    if (introVideo && typeof introVideo === 'string') {
-      const fileName = introVideo.split('/').at(-1);
-      if (typeof fileName === 'string') {
-        unlinkFile(fileName);
-      }
+    if (course.introVideo) {
+      unlinkFile(course.introVideo);
     }
     try {
       return {

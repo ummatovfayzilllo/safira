@@ -21,6 +21,13 @@ export class UsersService {
     private readonly config: ConfigService,
   ) {}
 
+  private withImageUrl<T extends { image?: string | null }>(entity: T): T {
+    return {
+      ...entity,
+      image: entity.image ? urlGenerator(this.config, entity.image) : entity.image,
+    };
+  }
+
   async create(data: CreateUserDto, image?: string) {
     console.log(data, image);
     await checAlreadykExistsResurs(
@@ -30,7 +37,7 @@ export class UsersService {
       data.email,
     );
     if (image) {
-      data['image'] = urlGenerator(this.config, image);
+      data['image'] = image;
     }
     const hashedPass = await bcrypt.hashSync(
       data.password,
@@ -44,12 +51,11 @@ export class UsersService {
     });
     return {
       message: "Siz muoffaqqiyatli ro'yhatdan o'tdingiz",
-      data: newUser,
+      data: this.withImageUrl(newUser),
     };
   }
 
   async updateImage(id: string, imageName: string) {
-    const image = urlGenerator(this.config, imageName);
     const oldUser = await checkExistsResurs<User>(
       this.prisma,
       ModelsEnumInPrisma.USERS,
@@ -59,17 +65,14 @@ export class UsersService {
     try {
       const updatedUser = await this.prisma.user.update({
         where: { id: id },
-        data: { image: image },
+        data: { image: imageName },
         select: userFindOneEntity,
       });
       if (oldUser.image) {
-        if (typeof oldUser.image.split('/').at(-1) === 'string') {
-          const filename = oldUser.image.split('/').at(-1);
-          unlinkFile(filename || '');
-        }
+        unlinkFile(oldUser.image);
       }
       return {
-        data: updatedUser,
+        data: this.withImageUrl(updatedUser),
         message: 'UserImage update successfully',
       };
     } catch (error) {}
@@ -81,7 +84,7 @@ export class UsersService {
     });
     return {
       message: `This action returns all users`,
-      data: users,
+      data: users.map((user) => this.withImageUrl(user)),
     };
   }
 
@@ -117,7 +120,7 @@ export class UsersService {
     }
     return {
       message: `This action returns a [ ${id} ] user`,
-      data: user,
+      data: this.withImageUrl(user),
     };
   }
 
@@ -145,12 +148,9 @@ export class UsersService {
     }
 
     if (image) {
-      data['image'] = urlGenerator(this.config, image);
+      data['image'] = image;
       if (oldUser.image) {
-        if (typeof oldUser.image.split('/').at(-1) === 'string') {
-          const filename = oldUser.image.split('/').at(-1);
-          unlinkFile(filename || '');
-        }
+        unlinkFile(oldUser.image);
       }
     }
 
@@ -162,7 +162,7 @@ export class UsersService {
       });
       return {
         message: `This action updates a #${id} user`,
-        updatedUser,
+        updatedUser: this.withImageUrl(updatedUser),
       };
     } catch (error) {
       console.log(error);
@@ -184,10 +184,7 @@ export class UsersService {
     try {
       const deletedUser = await this.prisma.user.delete({ where: { id: id } });
       if (oldUser.image) {
-        if (typeof oldUser.image.split('/').at(-1) === 'string') {
-          const filename = oldUser.image.split('/').at(-1);
-          unlinkFile(filename || '');
-        }
+        unlinkFile(oldUser.image);
       }
       return {
         message: `This action deleted a #${id} user`,

@@ -16,6 +16,13 @@ export class QuestionsService {
     private readonly config: ConfigService,
   ) {}
 
+  private withFileUrl<T extends { file?: string | null }>(record: T): T {
+    return {
+      ...record,
+      file: record.file ? urlGenerator(this.config, record.file) : record.file,
+    };
+  }
+
   async create(data: CreateQuestionDto, files: Express.Multer.File[]) {
     await checkExistsResurs(
       this.prisma,
@@ -30,12 +37,13 @@ export class QuestionsService {
       data.courseId,
     );
     if (files && files[0]) {
-      data['file'] = urlGenerator(this.config, files[0].filename);
+      data['file'] = files[0].filename;
     }
     try {
+      const created = await this.prisma.question.create({ data: data });
       return {
         message: 'This action adds a new question',
-        data: await this.prisma.question.create({ data: data }),
+        data: this.withFileUrl(created),
       };
     } catch (error) {
       console.log(error.message);
@@ -45,9 +53,10 @@ export class QuestionsService {
 
   async findAll() {
     try {
+      const questions = await this.prisma.question.findMany();
       return {
         message: `This action returns all questions`,
-        data: await this.prisma.question.findMany(),
+        data: questions.map((question) => this.withFileUrl(question)),
       };
     } catch (error) {
       console.log(error.message);
@@ -56,14 +65,15 @@ export class QuestionsService {
   }
 
   async findOne(id: string) {
+    const question = await checkExistsResurs<{ file?: string | null }>(
+      this.prisma,
+      ModelsEnumInPrisma.QUESTIONS,
+      'id',
+      id,
+    );
     return {
       message: `This action returns a #${id} question`,
-      data: await checkExistsResurs(
-        this.prisma,
-        ModelsEnumInPrisma.QUESTIONS,
-        'id',
-        id,
-      ),
+      data: this.withFileUrl(question),
     };
   }
 
@@ -80,11 +90,10 @@ export class QuestionsService {
     );
     try {
       if (files && files[0]) {
-        data['file'] = urlGenerator(this.config, files[0].filename);
+        data['file'] = files[0].filename;
       }
       if (oldQuestioon.file) {
-        const fileName = oldQuestioon.file.split('/').at(-1);
-        await unlinkFile(fileName || '');
+        await unlinkFile(oldQuestioon.file);
       }
       const updatedQuestion = await this.prisma.question.update({
         where: { id: id },
@@ -92,7 +101,7 @@ export class QuestionsService {
       });
       return {
         message: `This action update a #${id} question`,
-        data: updatedQuestion,
+        data: this.withFileUrl(updatedQuestion),
       };
     } catch (error) {
       console.log(error.message);
@@ -109,8 +118,7 @@ export class QuestionsService {
     );
     try {
       if (oldQuestioon.file) {
-        const fileName = oldQuestioon.file.split('/').at(-1);
-        await unlinkFile(fileName || '');
+        await unlinkFile(oldQuestioon.file);
       }
       const deletedQuestion = await this.prisma.question.delete({
         where: { id: id },
